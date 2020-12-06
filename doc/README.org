@@ -1,0 +1,32 @@
+#+STARTUP: showall
+#+OPTIONS: toc:nil author:nil
+# This is just the template README. Export to txt to get the real README.
+* NAME
+
+jasql --- Simple SQL in Common Lisp. A direct port of Python's anosql.
+
+* VERSION
+
+#+BEGIN_SRC shell :exports results
+cat ../version
+#+END_SRC
+
+* SYNOPSIS
+
+* DESCRIPTION
+
+** FUNCTIONS
+
+** VARIABLES
+
+* AUTHOR
+
+Sebastian Christ ([[mailto:rudolfo.christ@pm.me]])
+
+* LICENSE
+
+Released under the LGPL license.
+
+* SEE ALSO
+
+- [[https://github.com/honza/anosql][anosql]]
