@@ -7,7 +7,9 @@
   :homepage "https://github.com/rudolfochrist/jasql"
   :version (:read-file-line "version")
   :depends-on ()
-  :components ()
+  :components ((:file "package")
+               (:module "adapters"
+                :components ((:file "protocol"))))
   :description "Simple SQL in Common Lisp. A direct port of Python's anosql."
   :long-description
   #.(uiop:read-file-string
