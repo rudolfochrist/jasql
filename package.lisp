@@ -1,4 +1,8 @@
 ;;;; package.lisp
 
 (defpackage #:jasql
-  (:use :cl))
+  (:use :cl)
+  (:export
+   #:load-sql
+   #:sql
+   #:docstring))

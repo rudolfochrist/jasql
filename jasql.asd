@@ -6,8 +6,10 @@
   :license "LGPL"
   :homepage "https://github.com/rudolfochrist/jasql"
   :version (:read-file-line "version")
-  :depends-on ()
+  :depends-on ("cl-ppcre"
+               (:require "uiop"))
   :components ((:file "package")
+               (:file "jasql")
                (:module "adapters"
                 :components ((:file "protocol"))))
   :description "Simple SQL in Common Lisp. A direct port of Python's anosql."
