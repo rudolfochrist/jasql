@@ -26,12 +26,13 @@
                "fiasco"
                "jasql")
   :pathname "t/"
-  :components ((:file "tests"))
+  :components ((:file "tests")
+               (:static-file "users.sql"))
   :perform (test-op (op c)
                     (uiop:symbol-call
                      :fiasco
                      :run-package-tests
-                     :package :jasql.t
+                     :package :jasql.test
                      :interactive *test-interactive*)))
 
 (export '*test-interactive*)
