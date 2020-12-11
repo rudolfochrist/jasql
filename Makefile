@@ -15,6 +15,7 @@ ASDSRCS=$(wildcard *.asd)
 LISPSRCS=$(wildcard *.lisp)
 SRCS=$(ASDSRCS) $(LISPSRCS)
 
+LISPFLAGS=--no-userinit --non-interactive --noprint
 
 # paths
 scrdir=.
@@ -34,20 +35,32 @@ infodir=$(datarootdir)/info
 # programs
 INSTALL=/usr/bin/install
 EMACS=/usr/local/bin/emacs
-
-all:
+LISP=/usr/local/bin/sbcl
+LS=/usr/local/bin/gls
 
 clean:
+	-rm **/*.fasl
 
 distclean: clean
+	-rm -rf $(PACKAGE).tar.gz
 
 dist: distclean
+	mkdir -p $(PACKAGE)
+	cp -R $(shell $(LS)) $(PACKAGE)
+	tar czf $(PACKAGE).tar.gz $(PACKAGE)
+	rm -rf $(PACKAGE)
 
-install: all installdirs
+install: installdirs
+	cp -R $(shell $(LS)) $(DESTDIR)$(lispdir)
+	cp README.txt $(DESTDIR)$(docdir)
 
 uninstall:
+	-rm -rf $(lispdir)
+	-rm -rf $(docdir)
 
 installdirs:
+	mkdir -p $(DESTDIR)$(lispdir)
+	mkdir -p $(DESTDIR)$(docdir)
 
 info:
 
@@ -56,5 +69,11 @@ README.txt: doc/README.org
 	mv doc/README.txt .
 
 check:
+	$(LISP) $(LISPFLAGS) \
+	--eval "(require 'asdf)" \
+	--eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
+	--eval '(asdf:load-system "jasql")' \
+	--eval '(setf asdf-user:*test-interactive* t)' \
+	--eval '(asdf:test-system "jasql")'
 
 .PHONY: all clean distclean dist install installdirs uninstall info check
