@@ -15,24 +15,4 @@
   :description "Simple SQL in Common Lisp. A direct port of Python's anosql."
   :long-description
   #.(uiop:read-file-string
-     (uiop:subpathname *load-pathname* "README.txt"))
-  :in-order-to ((test-op (test-op jasql/test))))
-
-
-(defvar *test-interactive* nil)
-
-(defsystem "jasql/test"
-  :depends-on ("uiop"
-               "fiasco"
-               "jasql")
-  :pathname "t/"
-  :components ((:file "tests")
-               (:static-file "users.sql"))
-  :perform (test-op (op c)
-                    (uiop:symbol-call
-                     :fiasco
-                     :run-package-tests
-                     :package :jasql.test
-                     :interactive *test-interactive*)))
-
-(export '*test-interactive*)
+     (uiop:subpathname *load-pathname* "README.txt")))
