@@ -120,13 +120,19 @@ Details is a triple of name, method, sql, docstring."
            :start1 (- (length string) (length suffix))))
 
 
-(defmacro load-sql (path)
+(defmacro load-sql (path &key system)
   "Load SQL and generate DB access functions.
 
-PATH is either a SQL file or a directory that contains SQL files."
-  (setf path (etypecase path
-               (symbol (symbol-value path))
-               ((or pathname string) path)))
+PATH is either a SQL file or a directory that contains SQL files. If
+PATH is relative, it is assumed to be relative to SYSTEM."
+  (when (and (uiop:relative-pathname-p path)
+             (null system))
+    (error 'jasql-error
+           :format-control "Please provide system for relative path ~S."
+           :format-arguments (list path)))
+  (setf path (if (uiop:absolute-pathname-p path)
+                 path
+                 (asdf:system-relative-pathname system path)))
   (unless (probe-file path)
     (error 'jasql-error
            :format-control "File ~A not found."
