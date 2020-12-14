@@ -59,10 +59,10 @@
 
 (defun extract-parameters (sql)
   "Extract parameters used in SQL."
-  (let ((params (nth-value 1 (ppcre:scan-to-strings *parameter-pattern* sql))))
-    (map 'list
-         (lambda (param) (make-symbol (string-upcase param)))
-         params)))
+  (let ((symbols '()))
+    (ppcre:do-register-groups (param)
+        (*parameter-pattern* sql (nreverse symbols))
+      (push (make-symbol (string-upcase param)) symbols))))
 
 
 (defun create-name-method-pair (name)
@@ -124,6 +124,9 @@ Details is a triple of name, method, sql, docstring."
   "Load SQL and generate DB access functions.
 
 PATH is either a SQL file or a directory that contains SQL files."
+  (setf path (etypecase path
+               (symbol (symbol-value path))
+               ((or pathname string) path)))
   (unless (probe-file path)
     (error 'jasql-error
            :format-control "File ~A not found."
@@ -143,14 +146,19 @@ PATH is either a SQL file or a directory that contains SQL files."
                                               (gsym (gensym "sym")))
                                           `(let ((,gsym (intern (string-upcase ,name))))
                                              (setf (symbol-function ,gsym)
-                                                   (lambda (db &rest parameters
-                                                                 ,@(unless (or (eql method 'insert-update-delete-many)
-                                                                               (null params))
-                                                                     (cons '&key params)))
-                                                     ,@(when params `((declare (ignorable ,@params))))
+                                                   (lambda (db
+                                                            ,@(unless (eql method 'execute-script)
+                                                                `(&rest parameters))
+                                                            ,@(unless (or (eql method 'insert-update-delete-many)
+                                                                          (null params))
+                                                                (cons '&key params)))
+                                                     ,@(when (and params
+                                                                  (not (eql method 'insert-update-delete-many)))
+                                                         `((declare (ignorable ,@params))))
                                                      (,method db
                                                               (get ',gsym :sql "")
-                                                              parameters)))
+                                                              ,@(unless (eql method 'execute-script)
+                                                                  '(parameters)))))
                                              (setf (documentation ,gsym 'function) ,doc)
                                              (setf (get ',gsym :sql) ,sql)
                                              ;; return nothing
