@@ -11,7 +11,7 @@ create table users
 
 -- name: bulk-insert-users*!
 -- Insert many users
-insert into user
+insert into users
 (
   username,
   firstname,
@@ -27,7 +27,7 @@ values
 
 -- name: insert-user-returning<!
 -- Insert a user
-insert into user
+insert into users
 (
   username,
   firstname,
@@ -43,7 +43,7 @@ values
 
 -- name: insert-user!
 -- Insert a user
-insert into user
+insert into users
 (
   username,
   firstname,
@@ -73,7 +73,7 @@ where _id = :id
 
 -- name: get-single-user?
 -- Return single user
-select username, firstname, lastname
+select _id, username, firstname, lastname
 from users
 where _id = :id
 ;
@@ -83,5 +83,6 @@ where _id = :id
 select username, firstname, lastname
 from users
 where lastname = :lastname
+;
 
 

@@ -28,12 +28,9 @@
   :components ((:file "sqlite")
                (:static-file "test.sql"))
   :perform (test-op (op c)
-                    (uiop:symbol-call :jasql.sqlite.test :initialize-environemt)
                     (uiop:symbol-call
-                     :fiasco
-                     :run-package-tests
-                     :package :jasql.sqlite.test
-                     :interactive *test-interactive*)
-                    (uiop:symbol-call :jasql.sqlite.test :finalize-environment)))
+                     :jasql.sqlite.test
+                     :run
+                     :interactive *test-interactive*)))
 
 
