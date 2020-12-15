@@ -13,11 +13,40 @@ cat ../version
 
 * SYNOPSIS
 
+On the SQL side:
+#+begin_src sql
+-- name: get-all-articles
+-- Retreive all articles.
+SELECT * FROM articles;
+
+-- name: add-new-article!
+-- Adds a new articles.
+INSERT INTO articles
+(title, author)
+VALUES
+(:title, :author);
+#+end_src
+
+On the Lisp side:
+#+begin_src lisp
+(jasql:load-sql "sql/articles.sql" :system "blog")
+
+(add-new-article *db* :title "On lisp" :author "paulg")
+(get-all-articles *db*)
+#+end_src
+
 * DESCRIPTION
 
-** FUNCTIONS
+=jasql= is a direct port of [[https://github.com/honza/anosql][anosql]] from Python to Common Lisp. A [[https://github.com/krisajenkins/yesql/][Yesql]]-style SQL library.
 
-** VARIABLES
+For more documentation read the Info file.
+
+** INSTALLATION
+
+=jasql= is not available with Quicklisp. Either put it into QL's local projects or to any other place where
+QL/ASDF can find it.
+
+You can run ~make install~ to install it to =/usr/local/lisp/jasql= or any other =prefix= ASDF knows about.
 
 * AUTHOR
 
