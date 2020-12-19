@@ -45,8 +45,6 @@ This manual is for jasql (version 0.1.1.1 , last updated “19 December
 * GNU Free Documentation License::
 * Concept Index::
 * Functions and Macro Index::
-* Class and Type Index::
-* Variable Index::
 
 — The Detailed Node Listing —
 
@@ -788,7 +786,7 @@ B Concept Index
 * SQL:                                   Defining Queries.      (line 6)
 
 
-File: jasql.info,  Node: Functions and Macro Index,  Next: Class and Type Index,  Prev: Concept Index,  Up: Top
+File: jasql.info,  Node: Functions and Macro Index,  Prev: Concept Index,  Up: Top
 
 C Functions and Macro Index
 ***************************
@@ -815,46 +813,32 @@ C Functions and Macro Index
 * sql:                                   Directory.            (line 41)
 * sql <1>:                               Directory.            (line 41)
 
-
-File: jasql.info,  Node: Class and Type Index,  Next: Variable Index,  Prev: Functions and Macro Index,  Up: Top
-
-D Class and Type Index
-**********************
-
-
-File: jasql.info,  Node: Variable Index,  Prev: Class and Type Index,  Up: Top
-
-E Variable Index
-****************
-
 
 
 Tag Table:
 Node: Top740
-Node: Defining Queries1841
-Node: Loading Queries2438
-Node: Query Name Semantics2744
-Node: Insert returning with <!3330
-Node: Insert/Update/Delete with !3888
-Node: Bulk operations with *!4565
-Node: Execute script with #5240
-Node: Select one with ?5806
-Node: Implementing an Database Adapter6064
-Node: Directory8602
-Ref: Function docstring8755
-Ref: Generic-Function execute-script8826
-Ref: Generic-Function insert-returning8925
-Ref: Generic-Function insert-update-delete9149
-Ref: Generic-Function insert-update-delete-many9271
-Ref: Macro load-sql9537
-Ref: Generic-Function select9809
-Ref: Generic-Function select-one-row9900
-Ref: Function sql10013
-Node: GNU Free Documentation License10083
-Node: Concept Index33477
-Node: Functions and Macro Index35743
-Node: Class and Type Index37251
-Node: Variable Index37414
+Node: Defining Queries1797
+Node: Loading Queries2394
+Node: Query Name Semantics2700
+Node: Insert returning with <!3286
+Node: Insert/Update/Delete with !3844
+Node: Bulk operations with *!4521
+Node: Execute script with #5196
+Node: Select one with ?5762
+Node: Implementing an Database Adapter6020
+Node: Directory8558
+Ref: Function docstring8711
+Ref: Generic-Function execute-script8782
+Ref: Generic-Function insert-returning8881
+Ref: Generic-Function insert-update-delete9105
+Ref: Generic-Function insert-update-delete-many9227
+Ref: Macro load-sql9493
+Ref: Generic-Function select9765
+Ref: Generic-Function select-one-row9856
+Ref: Function sql9969
+Node: GNU Free Documentation License10039
+Node: Concept Index33433
+Node: Functions and Macro Index35699
 
 End Tag Table
 

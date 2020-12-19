@@ -56,8 +56,6 @@ Free Documentation License''.
 * GNU Free Documentation License::
 * Concept Index::
 * Functions and Macro Index::
-* Class and Type Index::
-* Variable Index::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -803,15 +801,5 @@ to permit their use in free software.
 @chapter Functions and Macro Index
 
 @printindex fn
-
-@node Class and Type Index
-@chapter Class and Type Index
-
-@printindex tp
-
-@node Variable Index
-@chapter Variable Index
-
-@printindex vr
 
 @bye
