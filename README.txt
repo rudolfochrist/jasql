@@ -54,8 +54,8 @@
 4.1 INSTALLATION
 ~~~~~~~~~~~~~~~~
 
-  `jasql' is not available with Quicklisp. Either put it into QL's local
-  projects or to any other place where QL/ASDF can find it.
+  `jasql' is not in Quicklisp. Either put it into QL's local projects or
+  to any other place where QL/ASDF can find it.
 
   You can run `make install' to install it to `/usr/local/lisp/jasql' or
   any other `prefix' ASDF knows about.
@@ -76,7 +76,5 @@
 7 SEE ALSO
 ==========
 
-  - [anosql]
-
-
-[anosql] <https://github.com/honza/anosql>
+  - <https://github.com/honza/anosql>
+  - <https://github.com/ruricolist/cl-yesql>
