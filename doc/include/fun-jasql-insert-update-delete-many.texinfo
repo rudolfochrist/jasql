@@ -1,0 +1,9 @@
+@findex insert-update-delete-many
+@anchor{Generic-Function insert-update-delete-many}
+@deffn {Generic Function} {insert-update-delete-many} db sql @&optional parameters-list
+Run an @code{insert/update/delete} statement in bulk.
+
+@code{parameters-list} is a list of parameters that would have been passed to
+`insert-update-delete'.
+@end deffn
+

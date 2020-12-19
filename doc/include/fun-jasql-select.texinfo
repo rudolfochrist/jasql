@@ -1,0 +1,6 @@
+@findex select
+@anchor{Generic-Function select}
+@deffn {Generic Function} {select} db sql @&optional parameters
+Run @code{select} statement.
+@end deffn
+

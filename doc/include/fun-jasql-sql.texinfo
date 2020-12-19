@@ -1,0 +1,6 @@
+@findex sql
+@anchor{Function sql}
+@deffn {Function} {sql} symbol
+Return @code{sql} used by @code{symbol}.
+@end deffn
+

@@ -1,0 +1,10 @@
+@include include/sb-texinfo.texinfo
+@include include/fun-jasql-docstring.texinfo
+@include include/fun-jasql-execute-script.texinfo
+@include include/fun-jasql-insert-returning.texinfo
+@include include/fun-jasql-insert-update-delete.texinfo
+@include include/fun-jasql-insert-update-delete-many.texinfo
+@include include/macro-jasql-load-sql.texinfo
+@include include/fun-jasql-select.texinfo
+@include include/fun-jasql-select-one-row.texinfo
+@include include/fun-jasql-sql.texinfo

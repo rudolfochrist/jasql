@@ -1,0 +1,6 @@
+@findex docstring
+@anchor{Function docstring}
+@deffn {Function} {docstring} symbol
+Return docstring of @code{symbol}.
+@end deffn
+

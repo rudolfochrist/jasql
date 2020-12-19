@@ -1,10 +1,9 @@
-#+MACRO: version (eval (f-read-text "../version"))
+#+MACRO: version (eval (progn (require 'f) (f-read-text "../version")))
 
 #+TITLE: jasql Manuel {{{version}}}
 #+AUTHOR: Sebastian Christ
 #+EMAIL: rudolfo.christ@pm.me
 #+OPTIONS: ':t author:t email:t toc:t
-
 
 #+TEXINFO_DIR_CATEGORY: Software Development
 #+TEXINFO_DIR_TITLE: jasql (jasql)
@@ -18,7 +17,7 @@
 :END:
 
 This manual is for jasql (version {{{version}}},
-last updated {{{modification-time("%d %B %4Y", t)}}})
+last updated {{{modification-time("%d %B %4Y")}}})
 
 Copyright @@texinfo:@copyright{}@@ 2020 Free Software Foundation, Inc.
 
@@ -30,6 +29,211 @@ with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 A copy of the license is included in the section entitled "GNU
 Free Documentation License".
 #+end_quote
+
+* Defining Queries
+
+#+CINDEX: Defining Queries
+#+CINDEX: --name:
+#+CINDEX: SQL
+
+Each SQL query (or script) that should be used from you application must have a =-- name:= comment right
+above the actual query. This name is also used as the function name in your Lisp image.
+
+Here's an example query definition:
+
+#+begin_src sql
+-- name: get-all-articles
+-- Retrieve all articles.
+select *
+from articles
+;
+#+end_src
+
+Every comment between the =--name:= token and the actual SQL query is transformed into the function's
+docstring.
+
+* Loading Queries
+#+CINDEX: Loading queries
+
+To load the queries into your Lisp image and generate functions for it, use [[texiref:Macro load-sql][load-sql]].
+
+#+begin_src lisp
+(jasql:load-sql "path/to/sql" :system "blog")
+#+end_src
+
+* Query Name Semantics
+#+cindex: --name:
+#+cindex: naming semantics
+#+cindex: select 
+
+A query's name can have several suffixes with different semantics about the queries. =jasql= determines how a
+query should be executes on the basis of that suffix. Without any suffix the statement is a ~select~ statement
+returning possibly multiple rows.
+
+** Insert returning with ~<!~
+#+cindex: insert returning
+#+cindex: <!
+
+A name ending with ~<!~ defines an insert that returns a specific value. Mostly this is used to return some
+generated value by the database, such as =lastrowid= (for SQLite). 
+
+#+begin_src sql
+-- name: add-new-article<!
+-- Inserts a new article and returns the ID.
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, :author, :content)
+;
+#+end_src
+
+** Insert/Update/Delete with ~!~
+#+cindex: insert update delete many
+#+cindex: !
+
+Any operation of ~insert~, ~update~ or ~delete~ must have a =!= suffix. They don't return anything. 
+
+#+begin_src sql
+-- name: insert-article-for-src!
+-- Insert an article with src as author
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, 'src', :content)
+;
+#+end_src
+
+Or with delete:
+
+#+begin_src sql
+-- name: delete-article!
+-- Deletes an article
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+#+end_src
+
+** Bulk operations with ~*!~
+#+cindex: insert update delete many
+#+cindex: *!
+#+cindex: bulk operation
+
+For statements that insert/update/delete many values use the ~*!~ suffix. The generated function expected a
+list of lists of arguments.
+
+#+begin_src sql
+-- name: delete-many*!
+-- Delete a bunch of articles
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+#+end_src
+
+And on the lisp side, execute the function like this:
+
+#+begin_src lisp
+(delete-many
+ ,*db*
+ '((:article_id 5)
+   (:article_id 24)
+   (:article_id 43)
+   (:article_id 334)))
+#+end_src
+
+** Execute script with ~#~
+#+cindex: execute script
+#+cindex: #
+
+
+Sometimes a statements doesn't take any parameters (e.g. ~create table~) then use the ~#~ suffix.
+
+#+begin_src sql
+-- name: create-articles-table#
+-- Creates the articles table
+CREATE TABLE articles
+(
+  article_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  author TEXT NOT NULL,
+  content TEXT NOT NULL
+)
+;
+#+end_src
+
+** Select one with ~?~
+#+cindex: select on row
+#+cindex: ?
+
+Sometimes a query produces a single result. Every query with a ~?~ suffix returns a single row. 
+
+* Implementing an Database Adapter
+#+cindex: implementing an database adapter
+#+cindex: adapter protocol
+
+Implementing a new adapter means specializing the adapter protocol to your adapter type. Following is an
+implementation for SQLite:
+
+#+begin_src lisp
+(defun escape-parameters (params)
+  (labels ((recu (params result)
+             (cond
+               ((null params)
+                (reverse result))
+               ((keywordp (first params))
+                (recu (rest params)
+                      (cons (format nil ":~A" (string-downcase (string (first params)))) result)))
+               ((consp (first params))
+                (recu (rest params)
+                      (cons (recu (first params) '()) result)))
+               (t
+                (recu (rest params) (cons (first params) result))))))
+    (recu params '())))
+
+
+(defmacro with-escaped-parameters ((parameters) &body body)
+  (let ((gparams (gensym "params")))
+    `(let* ((,gparams (escape-parameters ,parameters))
+            (,(intern (symbol-name parameters)) ,gparams))
+       ,@body)))
+
+
+(defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters))
+  (sqlite:last-insert-rowid db))
+
+
+(defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters)))
+
+
+(defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
+  (with-escaped-parameters (parameters-list)
+    (sqlite:with-transaction db
+      (loop for parameters in parameters-list
+            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
+
+
+(defmethod execute-script ((db sqlite-handle) sql)
+  (sqlite:execute-non-query db sql))
+
+
+(defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
+      (when (=  1 (length result))
+        (first result)))))
+
+
+(defmethod select ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-to-list/named db sql parameters)))
+#+end_src
+
+* Directory
+
+#+TEXINFO: @include dict.texi
 
 * GNU Free Documentation License
 :PROPERTIES:
@@ -487,4 +691,12 @@ recommend releasing these examples in parallel under your choice of
 free software license, such as the GNU General Public License,
 to permit their use in free software.
 
+* Concept Index
+:PROPERTIES:
+:INDEX: cp
+:END:
 
+* Functions and Macro Index
+:PROPERTIES:
+:INDEX: fn
+:END:

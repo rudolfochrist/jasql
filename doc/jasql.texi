@@ -9,7 +9,7 @@
 @copying
 This manual is for jasql (version 0.1.1.1
 ,
-last updated ``16 December 2020'')
+last updated ``19 December 2020'')
 
 Copyright @copyright{} 2020 Free Software Foundation, Inc.
 
@@ -48,8 +48,261 @@ Free Documentation License''.
 @end ifnottex
 
 @menu
+* Defining Queries::
+* Loading Queries::
+* Query Name Semantics::
+* Implementing an Database Adapter::
+* Directory::
 * GNU Free Documentation License::
+* Concept Index::
+* Functions and Macro Index::
+* Class and Type Index::
+* Variable Index::
+
+@detailmenu
+--- The Detailed Node Listing ---
+
+Query Name Semantics
+
+* Insert returning with @code{<!}::
+* Insert/Update/Delete with @code{!}::
+* Bulk operations with @code{*!}::
+* Execute script with @code{#}::
+* Select one with @code{?}::
+
+@end detailmenu
 @end menu
+
+@node Defining Queries
+@chapter Defining Queries
+
+@cindex Defining Queries
+@cindex --name:
+@cindex SQL
+
+Each SQL query (or script) that should be used from you application must have a @samp{-- name:} comment right
+above the actual query. This name is also used as the function name in your Lisp image.
+
+Here's an example query definition:
+
+@example
+-- name: get-all-articles
+-- Retrieve all articles.
+select *
+from articles
+;
+@end example
+
+Every comment between the @samp{--name:} token and the actual SQL query is transformed into the function's
+docstring.
+
+@node Loading Queries
+@chapter Loading Queries
+
+@cindex Loading queries
+
+To load the queries into your Lisp image and generate functions for it, use @ref{Macro load-sql,,load-sql}.
+
+@lisp
+(jasql:load-sql "path/to/sql" :system "blog")
+@end lisp
+
+@node Query Name Semantics
+@chapter Query Name Semantics
+
+@cindex --name:
+@cindex naming semantics
+@cindex select
+
+A query's name can have several suffixes with different semantics about the queries. @samp{jasql} determines how a
+query should be executes on the basis of that suffix. Without any suffix the statement is a @code{select} statement
+returning possibly multiple rows.
+
+@menu
+* Insert returning with @code{<!}::
+* Insert/Update/Delete with @code{!}::
+* Bulk operations with @code{*!}::
+* Execute script with @code{#}::
+* Select one with @code{?}::
+@end menu
+
+@node Insert returning with @code{<!}
+@section Insert returning with @code{<!}
+
+@cindex insert returning
+@cindex <!
+
+A name ending with @code{<!} defines an insert that returns a specific value. Mostly this is used to return some
+generated value by the database, such as @samp{lastrowid} (for SQLite). 
+
+@example
+-- name: add-new-article<!
+-- Inserts a new article and returns the ID.
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, :author, :content)
+;
+@end example
+
+@node Insert/Update/Delete with @code{!}
+@section Insert/Update/Delete with @code{!}
+
+@cindex insert update delete many
+@cindex !
+
+Any operation of @code{insert}, @code{update} or @code{delete} must have a @samp{!} suffix. They don't return anything. 
+
+@example
+-- name: insert-article-for-src!
+-- Insert an article with src as author
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, 'src', :content)
+;
+@end example
+
+Or with delete:
+
+@example
+-- name: delete-article!
+-- Deletes an article
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+@end example
+
+@node Bulk operations with @code{*!}
+@section Bulk operations with @code{*!}
+
+@cindex insert update delete many
+@cindex *!
+@cindex bulk operation
+
+For statements that insert/update/delete many values use the @code{*!} suffix. The generated function expected a
+list of lists of arguments.
+
+@example
+-- name: delete-many*!
+-- Delete a bunch of articles
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+@end example
+
+And on the lisp side, execute the function like this:
+
+@lisp
+(delete-many
+ *db*
+ '((:article_id 5)
+   (:article_id 24)
+   (:article_id 43)
+   (:article_id 334)))
+@end lisp
+
+@node Execute script with @code{#}
+@section Execute script with @code{#}
+
+@cindex execute script
+@cindex #
+
+
+Sometimes a statements doesn't take any parameters (e.g. @code{create table}) then use the @code{#} suffix.
+
+@example
+-- name: create-articles-table#
+-- Creates the articles table
+CREATE TABLE articles
+(
+  article_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  author TEXT NOT NULL,
+  content TEXT NOT NULL
+)
+;
+@end example
+
+@node Select one with @code{?}
+@section Select one with @code{?}
+
+@cindex select on row
+@cindex ?
+
+Sometimes a query produces a single result. Every query with a @code{?} suffix returns a single row.
+
+@node Implementing an Database Adapter
+@chapter Implementing an Database Adapter
+
+@cindex implementing an database adapter
+@cindex adapter protocol
+
+Implementing a new adapter means specializing the adapter protocol to your adapter type. Following is an
+implementation for SQLite:
+
+@lisp
+(defun escape-parameters (params)
+  (labels ((recu (params result)
+             (cond
+               ((null params)
+                (reverse result))
+               ((keywordp (first params))
+                (recu (rest params)
+                      (cons (format nil ":~A" (string-downcase (string (first params)))) result)))
+               ((consp (first params))
+                (recu (rest params)
+                      (cons (recu (first params) '()) result)))
+               (t
+                (recu (rest params) (cons (first params) result))))))
+    (recu params '())))
+
+
+(defmacro with-escaped-parameters ((parameters) &body body)
+  (let ((gparams (gensym "params")))
+    `(let* ((,gparams (escape-parameters ,parameters))
+            (,(intern (symbol-name parameters)) ,gparams))
+       ,@@body)))
+
+
+(defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters))
+  (sqlite:last-insert-rowid db))
+
+
+(defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters)))
+
+
+(defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
+  (with-escaped-parameters (parameters-list)
+    (sqlite:with-transaction db
+      (loop for parameters in parameters-list
+            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
+
+
+(defmethod execute-script ((db sqlite-handle) sql)
+  (sqlite:execute-non-query db sql))
+
+
+(defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
+      (when (=  1 (length result))
+        (first result)))))
+
+
+(defmethod select ((db sqlite-handle) sql &optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-to-list/named db sql parameters)))
+@end lisp
+
+@node Directory
+@chapter Directory
+
+@include dict.texi
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
@@ -540,5 +793,25 @@ If your document contains nontrivial examples of program code, we
 recommend releasing these examples in parallel under your choice of
 free software license, such as the GNU General Public License,
 to permit their use in free software.
+
+@node Concept Index
+@chapter Concept Index
+
+@printindex cp
+
+@node Functions and Macro Index
+@chapter Functions and Macro Index
+
+@printindex fn
+
+@node Class and Type Index
+@chapter Class and Type Index
+
+@printindex tp
+
+@node Variable Index
+@chapter Variable Index
+
+@printindex vr
 
 @bye

@@ -1,0 +1,6 @@
+@findex insert-update-delete
+@anchor{Generic-Function insert-update-delete}
+@deffn {Generic Function} {insert-update-delete} db sql @&optional parameters
+Run an @code{insert/update/delete} statement.
+@end deffn
+

@@ -1,0 +1,6 @@
+@findex execute-script
+@anchor{Generic-Function execute-script}
+@deffn {Generic Function} {execute-script} db sql
+Run @code{sql} without any variable substitution.
+@end deffn
+
