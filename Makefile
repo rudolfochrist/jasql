@@ -18,7 +18,7 @@ SRCS=$(ASDSRCS) $(LISPSRCS)
 LISPFLAGS=--no-userinit --non-interactive --noprint
 
 # paths
-scrdir=.
+srcdir=$(PWD)
 
 prefix=/usr/local
 exec_prefix=$(prefix)
@@ -34,12 +34,13 @@ infodir=$(datarootdir)/info
 
 # programs
 INSTALL=/usr/bin/install
-EMACS=/usr/local/bin/emacs
 LISP=/usr/local/bin/sbcl
 LS=/usr/local/bin/gls
+MAKEINFO=/usr/local/bin/makeinfo
 
 clean:
 	-rm **/*.fasl
+	-rm -rf doc/dict.texi doc/include
 
 distclean: clean
 	-rm -rf $(PACKAGE).tar.gz
@@ -62,11 +63,18 @@ installdirs:
 	mkdir -p $(DESTDIR)$(lispdir)
 	mkdir -p $(DESTDIR)$(docdir)
 
-info:
+info: jasql.info
 
-README.txt: doc/README.org
-	$(EMACS) --batch -l $(DOTEMACS) --visit $< -f org-ascii-export-to-ascii
-	mv doc/README.txt .
+jasql.info: doc/jasql.texi doc/dict.texi
+	$(MAKEINFO) $(srcdir)/doc/jasql.texi
+
+doc/dict.texi: $(SRCS)
+	$(LISP) $(LISPFLAGS) \
+	--eval "(require 'asdf)" \
+	--eval '(push *default-pathname-defaults* asdf:*central-registry*)' \
+	--eval '(asdf:load-system "jasql")' \
+	--eval '(asdf:load-system "sb-texinfo")' \
+	--eval '(sb-texinfo:document-package :jasql :output-file "doc/dict.texi" :standalone nil :write-backmatter nil :write-menu nil :exclude-node t)'
 
 check:
 	$(LISP) $(LISPFLAGS) \
