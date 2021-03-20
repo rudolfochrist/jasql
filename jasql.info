@@ -1,6 +1,6 @@
 This is jasql.info, produced by makeinfo version 6.7 from jasql.texi.
 
-This manual is for jasql (version 0.1.1.1 , last updated “19 December
+This manual is for jasql (version 0.1.2 , last updated “20 December
 2020”)
 
    Copyright © 2020 Free Software Foundation, Inc.
@@ -20,10 +20,10 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.1.1.1
-********************
+jasql Manuel 0.1.2
+******************
 
-This manual is for jasql (version 0.1.1.1 , last updated “19 December
+This manual is for jasql (version 0.1.2 , last updated “20 December
 2020”)
 
    Copyright © 2020 Free Software Foundation, Inc.
@@ -816,29 +816,29 @@ C Functions and Macro Index
 
 
 Tag Table:
-Node: Top740
-Node: Defining Queries1797
-Node: Loading Queries2394
-Node: Query Name Semantics2700
-Node: Insert returning with <!3286
-Node: Insert/Update/Delete with !3844
-Node: Bulk operations with *!4521
-Node: Execute script with #5196
-Node: Select one with ?5762
-Node: Implementing an Database Adapter6020
-Node: Directory8558
-Ref: Function docstring8711
-Ref: Generic-Function execute-script8782
-Ref: Generic-Function insert-returning8881
-Ref: Generic-Function insert-update-delete9105
-Ref: Generic-Function insert-update-delete-many9227
-Ref: Macro load-sql9493
-Ref: Generic-Function select9765
-Ref: Generic-Function select-one-row9856
-Ref: Function sql9969
-Node: GNU Free Documentation License10039
-Node: Concept Index33433
-Node: Functions and Macro Index35699
+Node: Top738
+Node: Defining Queries1789
+Node: Loading Queries2386
+Node: Query Name Semantics2692
+Node: Insert returning with <!3278
+Node: Insert/Update/Delete with !3836
+Node: Bulk operations with *!4513
+Node: Execute script with #5188
+Node: Select one with ?5754
+Node: Implementing an Database Adapter6012
+Node: Directory8550
+Ref: Function docstring8703
+Ref: Generic-Function execute-script8774
+Ref: Generic-Function insert-returning8873
+Ref: Generic-Function insert-update-delete9097
+Ref: Generic-Function insert-update-delete-many9219
+Ref: Macro load-sql9485
+Ref: Generic-Function select9757
+Ref: Generic-Function select-one-row9848
+Ref: Function sql9961
+Node: GNU Free Documentation License10031
+Node: Concept Index33425
+Node: Functions and Macro Index35691
 
 End Tag Table
 
