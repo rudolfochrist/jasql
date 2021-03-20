@@ -1,4 +1,5 @@
 #+MACRO: version (eval (progn (require 'f) (f-read-text "../version")))
+#+STARTUP: content
 
 #+TITLE: jasql Manuel {{{version}}}
 #+AUTHOR: Sebastian Christ

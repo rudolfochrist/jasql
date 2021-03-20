@@ -1,4 +1,8 @@
+
 ;;;; jasql.sqlite.asd
+
+(defvar *test-interactive* nil)
+(export '*test-interactive*)
 
 (defsystem "jasql.sqlite"
   :author "Sebastian Christ <rudolfo.christ@pm.me>"
@@ -14,11 +18,12 @@
   :long-description
   #.(uiop:read-file-string
      (uiop:subpathname *load-pathname* "README.txt"))
-  :in-order-to ((test-op (test-op jasql.sqlite/test))))
-
-
-(defvar *test-interactive* nil)
-(export '*test-interactive*)
+  :in-order-to ((test-op (load-op "jasql.sqlite/test")))
+  :perform (test-op (op c)
+                    (uiop:symbol-call
+                     :jasql.sqlite.test
+                     :run
+                     :interactive *test-interactive*)))
 
 (defsystem "jasql.sqlite/test"
   :depends-on ("uiop"
@@ -26,11 +31,6 @@
                "jasql.sqlite")
   :pathname "t/"
   :components ((:file "sqlite")
-               (:static-file "test.sql"))
-  :perform (test-op (op c)
-                    (uiop:symbol-call
-                     :jasql.sqlite.test
-                     :run
-                     :interactive *test-interactive*)))
+               (:static-file "test.sql")))
 
 

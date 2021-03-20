@@ -61,8 +61,12 @@
   "Extract parameters used in SQL."
   (let ((symbols '()))
     (ppcre:do-register-groups (param)
-        (*parameter-pattern* sql (nreverse symbols))
-      (push (make-symbol (string-upcase param)) symbols))))
+        (*parameter-pattern* sql)
+      (push param symbols))
+    (nreverse
+     (mapcar (lambda (param)
+               (make-symbol (string-upcase param)))
+             (remove-duplicates symbols :test #'string=)))))
 
 
 (defun create-name-method-pair (name)
