@@ -69,6 +69,11 @@
              (remove-duplicates symbols :test #'string=)))))
 
 
+(defun params-as-keywords (params)
+  (loop for param in params
+        collect (intern (string-upcase (string param)) :keyword)))
+
+
 (defun create-name-method-pair (name)
   "Map name to adapter method.
 
@@ -166,11 +171,12 @@ PATH is relative, it is assumed to be relative to SYSTEM."
                                                                   (not (eql method 'insert-update-delete-many)))
                                                          `((declare (ignorable ,@params))))
                                                      (,method db
-                                                              (get ',gsym :sql "")
+                                                              (get ,gsym :sql "")
                                                               ,@(unless (eql method 'execute-script)
                                                                   '(parameters)))))
                                              (setf (documentation ,gsym 'function) ,doc)
-                                             (setf (get ',gsym :sql) ,sql)
+                                             (setf (get ,gsym :sql) ,sql)
+                                             (setf (get ,gsym :parameters) ',(params-as-keywords params))
                                              ;; return nothing
                                              (values)))))))))
 
@@ -178,6 +184,11 @@ PATH is relative, it is assumed to be relative to SYSTEM."
 (defun sql (symbol)
   "Return SQL used by SYMBOL."
   (get symbol :sql))
+
+
+(defun paramaters (symbol)
+  "Parameters used in SQL for SYMBOL."
+  (get symbol :parameters))
 
 
 (defun docstring (symbol)

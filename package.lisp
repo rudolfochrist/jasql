@@ -13,4 +13,5 @@
    #:insert-update-delete-many
    #:execute-script
    #:select-one-row
-   #:select))
+   #:select
+   #:paramaters))
