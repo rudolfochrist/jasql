@@ -1,7 +1,6 @@
 This is jasql.info, produced by makeinfo version 6.7 from jasql.texi.
 
-This manual is for jasql (version 0.1.2 , last updated “20 December
-2020”)
+This manual is for jasql (version 0.2 , last updated “18 March 2022”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -20,11 +19,10 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.1.2
-******************
+jasql Manuel 0.2
+****************
 
-This manual is for jasql (version 0.1.2 , last updated “20 December
-2020”)
+This manual is for jasql (version 0.2 , last updated “18 March 2022”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -124,6 +122,18 @@ as ‘lastrowid’ (for SQLite).
      (title, author, content)
      VALUES
      (:title, :author, :content)
+     ;
+
+   PostgesSQL however allows multiple values to be returned with the
+‘returning’ clause:
+
+     -- name: add-new-article<!
+     -- Inserts an new article and returns ID and title.
+     insert into articles
+     (title, author, content)
+     values
+     (:title, :author, :content)
+     returning _id, title
      ;
 
 
@@ -821,30 +831,30 @@ C Functions and Macro Index
 
 
 Tag Table:
-Node: Top738
-Node: Defining Queries1789
-Node: Loading Queries2386
-Node: Query Name Semantics2692
-Node: Insert returning with <!3278
-Node: Insert/Update/Delete with !3836
-Node: Bulk operations with *!4513
-Node: Execute script with #5188
-Node: Select one with ?5754
-Node: Implementing an Database Adapter6012
-Node: Directory8550
-Ref: Function docstring8703
-Ref: Generic-Function execute-script8774
-Ref: Generic-Function insert-returning8873
-Ref: Generic-Function insert-update-delete9097
-Ref: Generic-Function insert-update-delete-many9219
-Ref: Macro load-sql9485
-Ref: Function paramaters9757
-Ref: Generic-Function select9842
-Ref: Generic-Function select-one-row9933
-Ref: Function sql10046
-Node: GNU Free Documentation License10116
-Node: Concept Index33510
-Node: Functions and Macro Index35776
+Node: Top733
+Node: Defining Queries1775
+Node: Loading Queries2372
+Node: Query Name Semantics2678
+Node: Insert returning with <!3264
+Node: Insert/Update/Delete with !4140
+Node: Bulk operations with *!4817
+Node: Execute script with #5492
+Node: Select one with ?6058
+Node: Implementing an Database Adapter6316
+Node: Directory8854
+Ref: Function docstring9007
+Ref: Generic-Function execute-script9078
+Ref: Generic-Function insert-returning9177
+Ref: Generic-Function insert-update-delete9401
+Ref: Generic-Function insert-update-delete-many9523
+Ref: Macro load-sql9789
+Ref: Function paramaters10061
+Ref: Generic-Function select10146
+Ref: Generic-Function select-one-row10237
+Ref: Function sql10350
+Node: GNU Free Documentation License10420
+Node: Concept Index33814
+Node: Functions and Macro Index36080
 
 End Tag Table
 

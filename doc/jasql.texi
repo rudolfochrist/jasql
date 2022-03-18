@@ -1,15 +1,15 @@
 \input texinfo    @c -*- texinfo -*-
 @c %**start of header
 @setfilename jasql.info
-@settitle jasql Manuel 0.1.2
+@settitle jasql Manuel 0.2
 @documentencoding UTF-8
 @documentlanguage en
 @c %**end of header
 
 @copying
-This manual is for jasql (version 0.1.2
+This manual is for jasql (version 0.2
 ,
-last updated ``20 December 2020'')
+last updated ``18 March 2022'')
 
 Copyright @copyright{} 2020 Free Software Foundation, Inc.
 
@@ -31,7 +31,7 @@ Free Documentation License''.
 
 @finalout
 @titlepage
-@title jasql Manuel 0.1.2
+@title jasql Manuel 0.2
 @author Sebastian Christ (@email{rudolfo.christ@@pm.me})
 @page
 @vskip 0pt plus 1filll
@@ -42,7 +42,7 @@ Free Documentation License''.
 
 @ifnottex
 @node Top
-@top jasql Manuel 0.1.2
+@top jasql Manuel 0.2
 
 @insertcopying
 @end ifnottex
@@ -140,6 +140,19 @@ INSERT INTO articles
 (title, author, content)
 VALUES
 (:title, :author, :content)
+;
+@end example
+
+PostgesSQL however allows multiple values to be returned with the @code{returning} clause:
+
+@example
+-- name: add-new-article<!
+-- Inserts an new article and returns ID and title.
+insert into articles
+(title, author, content)
+values
+(:title, :author, :content)
+returning _id, title
 ;
 @end example
 
