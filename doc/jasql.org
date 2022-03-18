@@ -88,6 +88,19 @@ VALUES
 ;
 #+end_src
 
+PostgesSQL however allows multiple values to be returned with the ~returning~ clause:
+
+#+begin_src sql
+-- name: add-new-article<!
+-- Inserts an new article and returns ID and title.
+insert into articles
+(title, author, content)
+values
+(:title, :author, :content)
+returning _id, title
+;
+#+end_src
+
 ** Insert/Update/Delete with ~!~
 #+cindex: insert update delete many
 #+cindex: !
