@@ -8,7 +8,7 @@
 =========
 
   ,----
-  | 0.1.2
+  | 0.1.3.1
   `----
 
 
@@ -70,7 +70,7 @@
 6 LICENSE
 =========
 
-  Released under the LGPL license.
+  Released under the MPL-2.0 license.
 
 
 7 SEE ALSO

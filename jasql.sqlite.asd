@@ -7,7 +7,7 @@
 (defsystem "jasql.sqlite"
   :author "Sebastian Christ <rudolfo.christ@pm.me>"
   :maintainer "Sebastian Christ <rudolfo.christ@pm.me>"
-  :license "LGPL"
+  :license "MPL-2.0"
   :homepage "https://github.com/rudolfochrist/jasql"
   :version (:read-file-line "version")
   :depends-on ("sqlite"

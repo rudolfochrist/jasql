@@ -55,7 +55,7 @@ Sebastian Christ ([[mailto:rudolfo.christ@pm.me]])
 
 * LICENSE
 
-Released under the LGPL license.
+Released under the MPL-2.0 license.
 
 * SEE ALSO
 
