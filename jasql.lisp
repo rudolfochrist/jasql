@@ -57,7 +57,7 @@
     (subseq string s e)))
 
 
-(defun extract-parameters (sql)
+(defun extract-parameters (sql &optional result-type)
   "Extract parameters used in SQL."
   (let ((symbols '()))
     (ppcre:do-register-groups (param)
@@ -65,7 +65,11 @@
       (push param symbols))
     (nreverse
      (mapcar (lambda (param)
-               (make-symbol (string-upcase param)))
+               (let ((upc-param (string-upcase param)))
+                 (case result-type
+                   (string param)
+                   (keyword (intern upc-param :keyword))
+                   (t (make-symbol upc-param)))))
              (remove-duplicates symbols :test #'string=)))))
 
 
