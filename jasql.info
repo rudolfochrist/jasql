@@ -304,6 +304,9 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
      files.  If ‘path’ is relative, it is assumed to be relative to
      ‘system’.
 
+ -- Function: paramaters symbol
+     Parameters used in ‘sql’ for ‘symbol’.
+
  -- Generic Function: select db sql &optional parameters
      Run ‘select’ statement.
 
@@ -806,12 +809,14 @@ C Functions and Macro Index
 * insert-update-delete-many <1>:         Directory.            (line 21)
 * load-sql:                              Directory.            (line 28)
 * load-sql <1>:                          Directory.            (line 28)
-* select:                                Directory.            (line 35)
-* select <1>:                            Directory.            (line 35)
-* select-one-row:                        Directory.            (line 38)
-* select-one-row <1>:                    Directory.            (line 38)
-* sql:                                   Directory.            (line 41)
-* sql <1>:                               Directory.            (line 41)
+* paramaters:                            Directory.            (line 35)
+* paramaters <1>:                        Directory.            (line 35)
+* select:                                Directory.            (line 38)
+* select <1>:                            Directory.            (line 38)
+* select-one-row:                        Directory.            (line 41)
+* select-one-row <1>:                    Directory.            (line 41)
+* sql:                                   Directory.            (line 44)
+* sql <1>:                               Directory.            (line 44)
 
 
 
@@ -833,12 +838,13 @@ Ref: Generic-Function insert-returning8873
 Ref: Generic-Function insert-update-delete9097
 Ref: Generic-Function insert-update-delete-many9219
 Ref: Macro load-sql9485
-Ref: Generic-Function select9757
-Ref: Generic-Function select-one-row9848
-Ref: Function sql9961
-Node: GNU Free Documentation License10031
-Node: Concept Index33425
-Node: Functions and Macro Index35691
+Ref: Function paramaters9757
+Ref: Generic-Function select9842
+Ref: Generic-Function select-one-row9933
+Ref: Function sql10046
+Node: GNU Free Documentation License10116
+Node: Concept Index33510
+Node: Functions and Macro Index35776
 
 End Tag Table
 

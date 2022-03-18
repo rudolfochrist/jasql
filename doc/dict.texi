@@ -5,6 +5,7 @@
 @include include/fun-jasql-insert-update-delete.texinfo
 @include include/fun-jasql-insert-update-delete-many.texinfo
 @include include/macro-jasql-load-sql.texinfo
+@include include/fun-jasql-paramaters.texinfo
 @include include/fun-jasql-select.texinfo
 @include include/fun-jasql-select-one-row.texinfo
 @include include/fun-jasql-sql.texinfo
