@@ -70,16 +70,14 @@ jasql.info: doc/jasql.texi doc/dict.texi
 
 doc/dict.texi: $(SRCS)
 	$(LISP) $(LISPFLAGS) \
-	--eval "(require 'asdf)" \
-	--eval '(push *default-pathname-defaults* asdf:*central-registry*)' \
+	--load load.lisp \
 	--eval '(asdf:load-system "jasql")' \
 	--eval '(asdf:load-system "sb-texinfo")' \
 	--eval '(sb-texinfo:document-package :jasql :output-file "doc/dict.texi" :standalone nil :write-backmatter nil :write-menu nil :exclude-node t)'
 
 check:
 	$(LISP) $(LISPFLAGS) \
-	--eval "(require 'asdf)" \
-	--eval "(push *default-pathname-defaults* asdf:*central-registry*)" \
+	--load load.lisp \
 	--eval '(asdf:load-system "jasql")' \
 	--eval '(setf asdf-user:*test-interactive* t)' \
 	--eval '(asdf:test-system "jasql")'
