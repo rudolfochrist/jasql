@@ -70,6 +70,9 @@ info: jasql.info
 jasql.info: doc/jasql.texi doc/dict.texi
 	$(MAKEINFO) $(srcdir)/doc/jasql.texi
 
+index.html: doc/jasql.texi
+	$(MAKEINFO) --html --no-split -o index.html doc/jasql.texi
+
 doc/jasql.texi: doc/jasql.org
 	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/orgtexi.el -f org-texinfo-export-to-texinfo
 
