@@ -83,6 +83,9 @@ doc/dict.texi: $(SRCS)
 	--eval '(asdf:load-system "sb-texinfo")' \
 	--eval '(sb-texinfo:document-package :jasql :output-file "doc/dict.texi" :standalone nil :write-backmatter nil :write-menu nil :exclude-node t)'
 
+README.txt: doc/README.org
+	$(EMACS) $< $(EMACSFLAGS) -f org-ascii-export-to-ascii
+
 check:
 	$(LISP) $(LISPFLAGS) \
 	--load load.lisp \
