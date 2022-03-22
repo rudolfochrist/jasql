@@ -1,3 +1,5 @@
+# -*- mode: org; -*-
+#+MACRO: version (eval (with-temp-buffer (insert-file-contents-literally "../version" nil) (buffer-substring-no-properties (point-min) (point-max))))
 #+STARTUP: showall
 #+EXPORT_FILE_NAME: ../README.txt
 #+OPTIONS: toc:nil author:nil
@@ -8,9 +10,7 @@ jasql --- Simple SQL in Common Lisp. A direct port of Python's anosql.
 
 * VERSION
 
-#+BEGIN_SRC shell :exports results
-cat ../version
-#+END_SRC
+{{{version}}}
 
 * SYNOPSIS
 

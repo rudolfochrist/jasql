@@ -70,11 +70,12 @@ info: jasql.info
 jasql.info: doc/jasql.texi doc/dict.texi
 	$(MAKEINFO) $(srcdir)/doc/jasql.texi
 
-index.html: doc/jasql.texi
+index.html: doc/jasql.texi doc/dict.texi
 	$(MAKEINFO) --html --no-split -o index.html doc/jasql.texi
 
-doc/jasql.texi: doc/jasql.org
-	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/orgtexi.el -f org-texinfo-export-to-texinfo
+doc/jasql.texi: doc/jasql.org version
+	-rm doc/jasql.texi
+	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/org-export.el -f org-texinfo-export-to-texinfo
 
 doc/dict.texi: $(SRCS)
 	$(LISP) $(LISPFLAGS) \
@@ -83,8 +84,9 @@ doc/dict.texi: $(SRCS)
 	--eval '(asdf:load-system "sb-texinfo")' \
 	--eval '(sb-texinfo:document-package :jasql :output-file "doc/dict.texi" :standalone nil :write-backmatter nil :write-menu nil :exclude-node t)'
 
-README.txt: doc/README.org
-	$(EMACS) $< $(EMACSFLAGS) -f org-ascii-export-to-ascii
+README.txt: doc/README.org version
+	-rm README.txt
+	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/org-export.el  -f org-ascii-export-to-ascii
 
 check:
 	$(LISP) $(LISPFLAGS) \
