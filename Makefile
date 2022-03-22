@@ -16,6 +16,7 @@ LISPSRCS=$(wildcard *.lisp)
 SRCS=$(ASDSRCS) $(LISPSRCS)
 
 LISPFLAGS=--no-userinit --non-interactive --noprint
+EMACSFLAGS=--batch -Q
 
 # paths
 srcdir=$(PWD)
@@ -37,6 +38,7 @@ INSTALL=/usr/bin/install
 LISP=/usr/local/bin/sbcl
 LS=/usr/local/bin/gls
 MAKEINFO=/usr/local/bin/makeinfo
+EMACS=/usr/local/bin/emacs
 
 clean:
 	-rm **/*.fasl
@@ -67,6 +69,9 @@ info: jasql.info
 
 jasql.info: doc/jasql.texi doc/dict.texi
 	$(MAKEINFO) $(srcdir)/doc/jasql.texi
+
+doc/jasql.texi: doc/jasql.org
+	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/orgtexi.el -f org-texinfo-export-to-texinfo
 
 doc/dict.texi: $(SRCS)
 	$(LISP) $(LISPFLAGS) \
