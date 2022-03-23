@@ -1,6 +1,6 @@
 This is jasql.info, produced by makeinfo version 6.7 from jasql.texi.
 
-This manual is for jasql (version 0.2 , last updated “18 March 2022”)
+This manual is for jasql (version 0.3 , last updated “22 March 2022”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -19,10 +19,10 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.2
+jasql Manuel 0.3
 ****************
 
-This manual is for jasql (version 0.2 , last updated “18 March 2022”)
+This manual is for jasql (version 0.3 , last updated “22 March 2022”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
