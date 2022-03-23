@@ -88,6 +88,9 @@ README.txt: doc/README.org version
 	-rm README.txt
 	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/org-export.el  -f org-ascii-export-to-ascii
 
+.PHONY:
+docs: info README.txt
+
 check:
 	$(LISP) $(LISPFLAGS) \
 	--load load.lisp \
