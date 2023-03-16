@@ -37,7 +37,7 @@ infodir=$(datarootdir)/info
 INSTALL=/usr/bin/install
 LISP=/usr/local/bin/sbcl
 LS=/usr/local/bin/gls
-MAKEINFO=/usr/local/bin/makeinfo
+MAKEINFO=/usr/local/opt/texinfo/bin/makeinfo
 EMACS=/usr/local/bin/emacs
 
 clean:
