@@ -25,7 +25,7 @@
    (host :initarg :host
          :initform "localhost"
          :accessor psql-host)
-   (port :initarg :post
+   (port :initarg :port
          :initform 5432
          :accessor psql-port)
    (pooled-p :initarg :pooled-p
