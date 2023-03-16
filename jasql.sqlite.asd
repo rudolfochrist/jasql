@@ -1,8 +1,6 @@
 
 ;;;; jasql.sqlite.asd
 
-(defvar *test-interactive* nil)
-(export '*test-interactive*)
 
 (defsystem "jasql.sqlite"
   :author "Sebastian Christ <rudolfo.christ@pm.me>"
@@ -22,8 +20,7 @@
   :perform (test-op (op c)
                     (uiop:symbol-call
                      :jasql.sqlite.test
-                     :run
-                     :interactive *test-interactive*)))
+                     :run)))
 
 (defsystem "jasql.sqlite/test"
   :depends-on ("uiop"

@@ -19,9 +19,6 @@
   :in-order-to ((test-op (test-op jasql.postgres/test))))
 
 
-(defvar *test-interactive* nil)
-(export '*test-interactive*)
-
 (defsystem "jasql.postgres/test"
   :depends-on ("uiop"
                "fiasco"
@@ -32,6 +29,5 @@
   :perform (test-op (op c)
                     (uiop:symbol-call
                      :jasql.postgres.test
-                     :run
-                     :interactive *test-interactive*)))
+                     :run)))
 

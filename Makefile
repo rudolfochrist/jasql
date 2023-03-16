@@ -15,7 +15,7 @@ ASDSRCS=$(wildcard *.asd)
 LISPSRCS=$(wildcard *.lisp)
 SRCS=$(ASDSRCS) $(LISPSRCS)
 
-LISPFLAGS=--no-userinit --non-interactive --noprint
+LISPFLAGS=--non-interactive --noprint
 EMACSFLAGS=--batch -Q
 
 # paths
@@ -94,8 +94,9 @@ docs: info README.txt
 check:
 	$(LISP) $(LISPFLAGS) \
 	--load load.lisp \
-	--eval '(asdf:load-system "jasql")' \
-	--eval '(setf asdf-user:*test-interactive* t)' \
-	--eval '(asdf:test-system "jasql")'
+	--eval '(asdf:load-system "jasql.sqlite")' \
+	--eval '(asdf:test-system "jasql.sqlite")' \
+	--eval '(asdf:load-system "jasql.postgres")' \
+	--eval '(asdf:test-system "jasql.postgres")'
 
 .PHONY: all clean distclean dist install installdirs uninstall info check
