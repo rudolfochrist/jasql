@@ -10,7 +10,10 @@
 (defun setup ()
   (setf *test-db* (make-instance 'postgres-handle
                                  :database "jasqltest"
-                                 :username "jasql")))
+                                 :username "jasql"
+                                 :password nil
+                                 :host :unix
+                                 :port 15432)))
 
 
 (defun teardown ()
