@@ -3,8 +3,11 @@
 (defsystem "jasql"
   :author "Sebastian Christ <rudolfo.christ@pm.me>"
   :maintainer "Sebastian Christ <rudolfo.christ@pm.me>"
+  :mailto "rudolfo.christ@pm.me"
   :license "MPL-2.0"
   :homepage "https://github.com/rudolfochrist/jasql"
+  :bug-tracker "https://github.com/rudolfochrist/jasql/issues"
+  :source-control (:git "https://github.com/rudolfochrist/jasql.git")
   :version (:read-file-line "version")
   :depends-on ("cl-ppcre"
                (:require "uiop"))
