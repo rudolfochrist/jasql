@@ -1,6 +1,6 @@
-This is jasql.info, produced by makeinfo version 7.0.2 from jasql.texi.
+This is jasql.info, produced by makeinfo version 7.0.3 from jasql.texi.
 
-This manual is for jasql (version 0.4 , last updated “16 March 2023”)
+This manual is for jasql (version 0.5 , last updated “05 November 2023”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -19,10 +19,10 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.4
+jasql Manuel 0.5
 ****************
 
-This manual is for jasql (version 0.4 , last updated “16 March 2023”)
+This manual is for jasql (version 0.5 , last updated “05 November 2023”)
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -285,17 +285,8 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 5 Directory
 ***********
 
- -- Function: docstring symbol
-     Return docstring of ‘symbol’.
-
  -- Generic Function: execute-script db sql
      Run ‘sql’ without any variable substitution.
-
- -- Generic Function: insert-returning db sql &optional parameters
-     Run ‘insert’ statement and return auto-generated value.
-
-     An auto-generated value can be the (e.g.)  ‘id’ of the last
-     inserted value.
 
  -- Generic Function: insert-update-delete db sql &optional parameters
      Run an ‘insert/update/delete’ statement.
@@ -313,6 +304,15 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
      ‘path’ is either a ‘sql’ file or a directory that contains ‘sql’
      files.  If ‘path’ is relative, it is assumed to be relative to
      ‘system’.
+
+ -- Function: docstring symbol
+     Return docstring of ‘symbol’.
+
+ -- Generic Function: insert-returning db sql &optional parameters
+     Run ‘insert’ statement and return auto-generated value.
+
+     An auto-generated value can be the (e.g.)  ‘id’ of the last
+     inserted value.
 
  -- Function: paramaters symbol
      Parameters used in ‘sql’ for ‘symbol’.
@@ -807,18 +807,18 @@ C Functions and Macro Index
  [index ]
 * Menu:
 
-* docstring:                             Directory.            (line  6)
-* docstring <1>:                         Directory.            (line  6)
-* execute-script:                        Directory.            (line  9)
-* execute-script <1>:                    Directory.            (line  9)
-* insert-returning:                      Directory.            (line 12)
-* insert-returning <1>:                  Directory.            (line 12)
-* insert-update-delete:                  Directory.            (line 18)
-* insert-update-delete <1>:              Directory.            (line 18)
-* insert-update-delete-many:             Directory.            (line 21)
-* insert-update-delete-many <1>:         Directory.            (line 21)
-* load-sql:                              Directory.            (line 28)
-* load-sql <1>:                          Directory.            (line 28)
+* docstring:                             Directory.            (line 26)
+* docstring <1>:                         Directory.            (line 26)
+* execute-script:                        Directory.            (line  6)
+* execute-script <1>:                    Directory.            (line  6)
+* insert-returning:                      Directory.            (line 29)
+* insert-returning <1>:                  Directory.            (line 29)
+* insert-update-delete:                  Directory.            (line  9)
+* insert-update-delete <1>:              Directory.            (line  9)
+* insert-update-delete-many:             Directory.            (line 12)
+* insert-update-delete-many <1>:         Directory.            (line 12)
+* load-sql:                              Directory.            (line 19)
+* load-sql <1>:                          Directory.            (line 19)
 * paramaters:                            Directory.            (line 35)
 * paramaters <1>:                        Directory.            (line 35)
 * select:                                Directory.            (line 38)
@@ -831,30 +831,30 @@ C Functions and Macro Index
 
 
 Tag Table:
-Node: Top735
-Node: Defining Queries1777
-Node: Loading Queries2374
-Node: Query Name Semantics2680
-Node: Insert returning with <!3266
-Node: Insert/Update/Delete with !4142
-Node: Bulk operations with *!4819
-Node: Execute script with #5494
-Node: Select one with ?6060
-Node: Implementing an Database Adapter6318
-Node: Directory8856
-Ref: Function docstring9009
-Ref: Generic-Function execute-script9080
-Ref: Generic-Function insert-returning9179
-Ref: Generic-Function insert-update-delete9403
-Ref: Generic-Function insert-update-delete-many9525
-Ref: Macro load-sql9791
-Ref: Function paramaters10063
-Ref: Generic-Function select10148
-Ref: Generic-Function select-one-row10239
-Ref: Function sql10352
-Node: GNU Free Documentation License10422
-Node: Concept Index33816
-Node: Functions and Macro Index36082
+Node: Top738
+Node: Defining Queries1783
+Node: Loading Queries2380
+Node: Query Name Semantics2686
+Node: Insert returning with <!3272
+Node: Insert/Update/Delete with !4148
+Node: Bulk operations with *!4825
+Node: Execute script with #5500
+Node: Select one with ?6066
+Node: Implementing an Database Adapter6324
+Node: Directory8862
+Ref: Generic-Function execute-script9015
+Ref: Generic-Function insert-update-delete9114
+Ref: Generic-Function insert-update-delete-many9236
+Ref: Macro load-sql9502
+Ref: Function docstring9774
+Ref: Generic-Function insert-returning9845
+Ref: Function paramaters10069
+Ref: Generic-Function select10154
+Ref: Generic-Function select-one-row10245
+Ref: Function sql10358
+Node: GNU Free Documentation License10428
+Node: Concept Index33822
+Node: Functions and Macro Index36088
 
 End Tag Table
 

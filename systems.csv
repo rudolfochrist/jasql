@@ -53,3 +53,4 @@ trivial-indent, ghcr.io/ocicl/trivial-indent@sha256:6fe5b8470816a715113c0f123d41
 legit, ghcr.io/ocicl/legit@sha256:2b4d26441a608555baf54636afb3b1344e7ddc2c40cd74b44eeb74a9c42dd9be, legit-20231004-9c677b9/legit.asd
 simple-inferiors, ghcr.io/ocicl/simple-inferiors@sha256:46e6110b6efdfd06a955e86ae0f7daa2ea65725fd680a534358bdbc88a813a0c, simple-inferiors-20230808-056ee77/simple-inferiors.asd
 lambda-fiddle, ghcr.io/ocicl/lambda-fiddle@sha256:8138cbabd4ab3010f5c082719559aad66035c1a962b82d9e6e239aab54beeacd, lambda-fiddle-20230808-d019c7f/lambda-fiddle.asd
+sb-texinfo, ghcr.io/lispmirror/sb-texinfo@sha256:f4185003ac395d4b12d610b31c44a6d083f396af2560b911e0958defb4a5ccca, sb-texinfo-20231104-0.1.2/sb-texinfo.asd
