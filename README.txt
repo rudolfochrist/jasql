@@ -7,7 +7,7 @@
 2 VERSION
 =========
 
-  0.5
+  0.6
 
 
 3 SYNOPSIS
