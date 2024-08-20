@@ -1,7 +1,7 @@
 ;;;; postgres.lisp
 
 (fiasco:define-test-package #:jasql.postgres.test
-    (:use #:jasql.postgres))
+  (:use :jasql.postgres))
 
 (in-package #:jasql.postgres.test)
 

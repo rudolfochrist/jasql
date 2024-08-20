@@ -1,7 +1,7 @@
 ;;;; sqlite.lisp
 
 (fiasco:define-test-package #:jasql.sqlite.test
-  (:use #:jasql.sqlite))
+  (:use :jasql.sqlite))
 
 (in-package #:jasql.sqlite.test)
 
