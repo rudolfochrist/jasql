@@ -32,9 +32,10 @@
 
 
 (defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters))
-  (sqlite:last-insert-rowid db))
+  (sqlite:with-transaction db
+    (with-escaped-parameters (parameters)
+      (apply #'sqlite:execute-non-query/named db sql parameters))
+    (sqlite:last-insert-rowid db)))
 
 
 (defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
