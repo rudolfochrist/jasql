@@ -15,7 +15,7 @@ ASDSRCS=$(wildcard *.asd)
 LISPSRCS=$(wildcard *.lisp)
 SRCS=$(ASDSRCS) $(LISPSRCS)
 
-LISPFLAGS=--non-interactive --noprint
+LISPFLAGS=--non-interactive --noprint --no-userinit
 EMACSFLAGS=--batch -Q
 
 # paths
