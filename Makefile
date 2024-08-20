@@ -79,7 +79,7 @@ doc/jasql.texi: doc/jasql.org version
 
 doc/dict.texi: $(SRCS)
 	$(LISP) $(LISPFLAGS) \
-	--load load.lisp \
+	--load init.lisp \
 	--eval '(asdf:load-system "jasql")' \
 	--eval '(asdf:load-system "sb-texinfo")' \
 	--eval '(sb-texinfo:document-package :jasql :output-file "doc/dict.texi" :standalone nil :write-backmatter nil :write-menu nil :exclude-node t)'
@@ -93,10 +93,10 @@ docs: info README.txt
 
 check:
 	$(LISP) $(LISPFLAGS) \
-	--load load.lisp \
-	--eval '(asdf:load-system "jasql.sqlite")' \
+	--load init.lisp \
+	--eval '(asdf:load-system "jasql.sqlite/test")' \
 	--eval '(asdf:test-system "jasql.sqlite")' \
-	--eval '(asdf:load-system "jasql.postgres")' \
+	--eval '(asdf:load-system "jasql.postgres/test")' \
 	--eval '(asdf:test-system "jasql.postgres")'
 
 .PHONY: all clean distclean dist install installdirs uninstall info check

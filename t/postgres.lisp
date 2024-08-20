@@ -12,8 +12,7 @@
                                  :database "jasqltest"
                                  :username "jasql"
                                  :password nil
-                                 :host :unix
-                                 :port 15432)))
+                                 :host :unix)))
 
 
 (defun teardown ()
