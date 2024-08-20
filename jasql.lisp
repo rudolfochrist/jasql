@@ -181,6 +181,7 @@ PATH is relative, it is assumed to be relative to SYSTEM."
                                              (setf (documentation ,gsym 'function) ,doc)
                                              (setf (get ,gsym :sql) ,sql)
                                              (setf (get ,gsym :parameters) ',(params-as-keywords params))
+                                             (export ',gsym)
                                              ;; return nothing
                                              (values)))))))))
 
