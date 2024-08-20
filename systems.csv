@@ -49,3 +49,4 @@ cl-base64-tests, ghcr.io/ocicl/cl-base64@sha256:702412dbc1ed825e275fb23e22c29527
 uax-15, ghcr.io/ocicl/uax-15@sha256:98286ee7b08a849dd2bb8992ab7c4cda7f429f25e8815939297979a49e4b3dad, uax-15-0.1.3/uax-15.asd
 closer-mop, ghcr.io/ocicl/closer-mop@sha256:ca83eed5afb2438d8214f310a0a4da04fc943010832427119c596271aece8f2c, closer-mop-20240803-264dca8/closer-mop.asd
 fiasco, ghcr.io/ocicl/fiasco@sha256:ce820a6d1a16bdfffdc2dbd82cbef2b438806b88e33affd1f7166b47b95c86cb, fiasco-20240503-bb47d2f/fiasco.asd
+sb-texinfo, ghcr.io/lispmirror/sb-texinfo@sha256:f4185003ac395d4b12d610b31c44a6d083f396af2560b911e0958defb4a5ccca, sb-texinfo-20231104-0.1.2/sb-texinfo.asd
