@@ -6,24 +6,20 @@
 (in-package #:jasql.sqlite.test)
 
 
-(defparameter *test-db* nil)
+(defparameter *test-db-path* (asdf:system-relative-pathname "jasql" "t/test.sqlite3"))
 
+(defparameter *test-db*
+  (make-instance 'jasql.sqlite:sqlite-handle :path *test-db-path*))
 
-(defun setup ()
-  (setf *test-db* (sqlite:connect ":memory:")))
-
-
-(defun teardown ()
-  (sqlite:disconnect *test-db*)
-  (setf *test-db* nil))
 
 (defun run (&key interactive)
-  (setup)
-  (run-package-tests :package :jasql.sqlite.test :interactive interactive)
-  (teardown))
+  (when (probe-file *test-db-path*)
+    (delete-file *test-db-path*))
+  (run-package-tests :package :jasql.sqlite.test :interactive interactive))
 
-(defun count-users (db)
-  (sqlite:execute-single db "select count(*) from users;"))
+(defun count-users ()
+  (sqlite:with-open-database (db (path *test-db*))
+    (sqlite:execute-single db "select count(*) from users;")))
 
 ;;; tests
 
@@ -41,7 +37,7 @@
    (list :username "foo" :firstname "Deborah" :lastname "Miller")
    (list :username "pfm" :firstname "Percy" :lastname "Miller")
    (list :username "src" :firstname "Sebastian" :lastname "Christ"))
-  (is (= (count-users *test-db*) 3)))
+  (is (= (count-users) 3)))
 
 
 (deftest test-insert-returning ()
@@ -49,24 +45,26 @@
                                     :username "lol"
                                     :firstname "Bob"
                                     :lastname "Bobbins"))
-         (user (sqlite:execute-to-list
-                *test-db*
-                "select * from users where _id = ?" id)))
+         (user (sqlite:with-open-database (db (path *test-db*))
+                 (sqlite:execute-to-list
+                  db
+                  "select * from users where _id = ?" id))))
     (is (string= "Bobbins" (fourth (first user))))))
 
 
 (deftest test-insert-delete ()
-  (let  ((count (count-users *test-db*)))
+  (let  ((count (count-users)))
     (insert-user *test-db* :username "frank")
-    (is (= (count-users *test-db*) (incf count)))
+    (is (= (count-users) (incf count)))
     (delete-user *test-db* :id 3)
-    (is (= (count-users *test-db*) (decf count)))))
+    (is (= (count-users) (decf count)))))
 
 
 (deftest test-update-user ()
   (let ((id (insert-user-returning *test-db* :username "cool" :firstname "McCool")))
     (update-name *test-db* :id id :firstname "SuperCool")
-    (is (string= (sqlite:execute-single *test-db* "select firstname from users where _id = ?" id)
+    (is (string= (sqlite:with-open-database (db (path *test-db*))
+                   (sqlite:execute-single db "select firstname from users where _id = ?" id))
                  "SuperCool"))))
 
 

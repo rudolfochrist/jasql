@@ -3,9 +3,22 @@
 (defpackage #:jasql.sqlite
   (:use :cl #:jasql)
   (:import-from #:sqlite
-                #:sqlite-handle))
+                #:with-transaction
+                #:with-open-database)
+  (:export
+   #:*default-busy-timeout*
+   #:sqlite-handle
+   #:path
+   #:busy-timeout))
 
 (in-package #:jasql.sqlite)
+
+(defclass sqlite-handle ()
+  ((path :initarg :path
+         :accessor path)
+   (busy-timeout :initarg :busy-timeout
+                 :initform 5000
+                 :accessor busy-timeout)))
 
 
 (defun escape-parameters (params)
@@ -31,27 +44,31 @@
        ,@body)))
 
 
-(defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
-  (sqlite:with-transaction db
+(defmethod insert-returning ((handle sqlite-handle) sql &optional parameters)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
+    (with-transaction db
+      (with-escaped-parameters (parameters)
+        (apply #'sqlite:execute-non-query/named db sql parameters))
+      (sqlite:last-insert-rowid db))))
+
+
+(defmethod insert-update-delete ((handle sqlite-handle) sql &optional parameters)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
     (with-escaped-parameters (parameters)
-      (apply #'sqlite:execute-non-query/named db sql parameters))
-    (sqlite:last-insert-rowid db)))
+      (apply #'sqlite:execute-non-query/named db sql parameters))))
 
 
-(defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters)))
+(defmethod insert-update-delete-many ((handle sqlite-handle) sql &optional parameters-list)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
+    (with-escaped-parameters (parameters-list)
+      (with-transaction db
+        (loop for parameters in parameters-list
+              do (apply #'sqlite:execute-non-query/named db sql parameters))))))
 
 
-(defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
-  (with-escaped-parameters (parameters-list)
-    (sqlite:with-transaction db
-      (loop for parameters in parameters-list
-            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
-
-
-(defmethod execute-script ((db sqlite-handle) sql)
-  (sqlite:execute-non-query db sql))
+(defmethod execute-script ((handle sqlite-handle) sql)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
+    (sqlite:execute-non-query db sql)))
 
 
 (defun make-keyword (string)
@@ -60,26 +77,28 @@
         (intern symbol-name :keyword))))
 
 
-(defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (let* ((query (sqlite:prepare-statement db sql))
-           (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
-      (loop for (pn pv) on parameters by #'cddr
-            do (sqlite:bind-parameter query pn pv))
-      (when (sqlite:step-statement query)
-        (loop for field in fields
-              for i from 0
-              nconc (list field (sqlite:statement-column-value query i)))))))
+(defmethod select-one-row ((handle sqlite-handle) sql &optional parameters)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
+    (with-escaped-parameters (parameters)
+      (let* ((query (sqlite:prepare-statement db sql))
+             (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
+        (loop for (pn pv) on parameters by #'cddr
+              do (sqlite:bind-parameter query pn pv))
+        (when (sqlite:step-statement query)
+          (loop for field in fields
+                for i from 0
+                nconc (list field (sqlite:statement-column-value query i))))))))
 
 
-(defmethod select ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (let* ((query (sqlite:prepare-statement db sql))
-           (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
-      (loop for (pn pv) on parameters by #'cddr
-            do (sqlite:bind-parameter query pn pv))
-      (loop for row = (sqlite:step-statement query)
-            while row
-            collect (loop for field in fields
-                          for i from 0
-                          nconc (list field (sqlite:statement-column-value query i)))))))
+(defmethod select ((handle sqlite-handle) sql &optional parameters)
+  (with-open-database (db (path handle) :busy-timeout (busy-timeout handle))
+    (with-escaped-parameters (parameters)
+      (let* ((query (sqlite:prepare-statement db sql))
+             (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
+        (loop for (pn pv) on parameters by #'cddr
+              do (sqlite:bind-parameter query pn pv))
+        (loop for row = (sqlite:step-statement query)
+              while row
+              collect (loop for field in fields
+                            for i from 0
+                            nconc (list field (sqlite:statement-column-value query i))))))))
