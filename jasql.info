@@ -1,6 +1,6 @@
 This is jasql.info, produced by makeinfo version 7.1 from jasql.texi.
 
-This manual is for jasql (version 0.6 , last updated "20 August 2024")
+This manual is for jasql (version 0.7 , last updated "05 November 2023")
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -19,10 +19,10 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.6
+jasql Manuel 0.7
 ****************
 
-This manual is for jasql (version 0.6 , last updated "20 August 2024")
+This manual is for jasql (version 0.7 , last updated "05 November 2023")
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -831,30 +831,30 @@ C Functions and Macro Index
 
 
 Tag Table:
-Node: Top726
-Node: Defining Queries1759
-Node: Loading Queries2352
-Node: Query Name Semantics2658
-Node: Insert returning with <!3242
-Node: Insert/Update/Delete with !4118
-Node: Bulk operations with *!4793
-Node: Execute script with #5468
-Node: Select one with ?6032
-Node: Implementing an Database Adapter6290
-Node: Directory8828
-Ref: Generic-Function execute-script8981
-Ref: Generic-Function insert-update-delete9080
-Ref: Generic-Function insert-update-delete-many9202
-Ref: Macro load-sql9464
-Ref: Function docstring9736
-Ref: Generic-Function insert-returning9807
-Ref: Function paramaters10031
-Ref: Generic-Function select10116
-Ref: Generic-Function select-one-row10207
-Ref: Function sql10320
-Node: GNU Free Documentation License10390
-Node: Concept Index33575
-Node: Functions and Macro Index35837
+Node: Top728
+Node: Defining Queries1763
+Node: Loading Queries2356
+Node: Query Name Semantics2662
+Node: Insert returning with <!3246
+Node: Insert/Update/Delete with !4122
+Node: Bulk operations with *!4797
+Node: Execute script with #5472
+Node: Select one with ?6036
+Node: Implementing an Database Adapter6294
+Node: Directory8832
+Ref: Generic-Function execute-script8985
+Ref: Generic-Function insert-update-delete9084
+Ref: Generic-Function insert-update-delete-many9206
+Ref: Macro load-sql9468
+Ref: Function docstring9740
+Ref: Generic-Function insert-returning9811
+Ref: Function paramaters10035
+Ref: Generic-Function select10120
+Ref: Generic-Function select-one-row10211
+Ref: Function sql10324
+Node: GNU Free Documentation License10394
+Node: Concept Index33579
+Node: Functions and Macro Index35841
 
 End Tag Table
 

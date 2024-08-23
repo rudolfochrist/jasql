@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This manual is for jasql (version 0.7
+,
+last updated "05 November 2023")
+
+Copyright © 2020 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+ -->
+<title>jasql Manuel 0.7</title>
+
+<meta name="description" content="jasql Manuel 0.7">
+<meta name="keywords" content="jasql Manuel 0.7">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="#Concept-Index" rel="index" title="Concept Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="#Defining-Queries" rel="next" title="Defining Queries">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter-printindex {text-decoration: none}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+td.printindex-index-entry {vertical-align: top}
+td.printindex-index-section {vertical-align: top; padding-left: 1em}
+th.entries-header-printindex {text-align:left}
+th.sections-header-printindex {text-align:left; padding-left: 1em}
+ul.toc-numbered-mark {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+
+
+
+
+
+<div class="top-level-extent" id="Top">
+<div class="nav-panel">
+<p>
+Next: <a href="#Defining-Queries" accesskey="n" rel="next">Defining Queries</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h1 class="top" id="jasql-Manuel-0_002e7"><span>jasql Manuel 0.7<a class="copiable-link" href="#jasql-Manuel-0_002e7"> &para;</a></span></h1>
+
+<p>This manual is for jasql (version 0.7
+,
+last updated &ldquo;05 November 2023&rdquo;)
+</p>
+<p>Copyright &copy; 2020 Free Software Foundation, Inc.
+</p>
+<blockquote class="quotation">
+<p>Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled &ldquo;GNU
+Free Documentation License&rdquo;.
+</p>
+</blockquote>
+
+
+<div class="element-contents" id="SEC_Contents">
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Defining-Queries-1" href="#Defining-Queries">1 Defining Queries</a></li>
+  <li><a id="toc-Loading-Queries-1" href="#Loading-Queries">2 Loading Queries</a></li>
+  <li><a id="toc-Query-Name-Semantics-1" href="#Query-Name-Semantics">3 Query Name Semantics</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Insert-returning-with-_003c_0021-1" href="#Insert-returning-with-_003c_0021">3.1 Insert returning with <code class="code">&lt;!</code></a></li>
+    <li><a id="toc-Insert_002fUpdate_002fDelete-with-_0021-1" href="#Insert_002fUpdate_002fDelete-with-_0021">3.2 Insert/Update/Delete with <code class="code">!</code></a></li>
+    <li><a id="toc-Bulk-operations-with-_002a_0021-1" href="#Bulk-operations-with-_002a_0021">3.3 Bulk operations with <code class="code">*!</code></a></li>
+    <li><a id="toc-Execute-script-with-_0023-1" href="#Execute-script-with-_0023">3.4 Execute script with <code class="code">#</code></a></li>
+    <li><a id="toc-Select-one-with-_003f-1" href="#Select-one-with-_003f">3.5 Select one with <code class="code">?</code></a></li>
+  </ul></li>
+  <li><a id="toc-Implementing-an-Database-Adapter-1" href="#Implementing-an-Database-Adapter">4 Implementing an Database Adapter</a></li>
+  <li><a id="toc-Directory-1" href="#Directory">5 Directory</a></li>
+  <li><a id="toc-GNU-Free-Documentation-License-1" href="#GNU-Free-Documentation-License">Appendix A GNU Free Documentation License</a></li>
+  <li><a id="toc-Concept-Index-1" href="#Concept-Index" rel="index">B Concept Index</a></li>
+  <li><a id="toc-Functions-and-Macro-Index-1" href="#Functions-and-Macro-Index" rel="index">C Functions and Macro Index</a></li>
+</ul>
+</div>
+</div>
+<hr>
+<div class="chapter-level-extent" id="Defining-Queries">
+<div class="nav-panel">
+<p>
+Next: <a href="#Loading-Queries" accesskey="n" rel="next">Loading Queries</a>, Previous: <a href="#Top" accesskey="p" rel="prev">jasql Manuel 0.7</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Defining-Queries-1"><span>1 Defining Queries<a class="copiable-link" href="#Defining-Queries-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-Defining-Queries"></a>
+<a class="index-entry-id" id="index-_002d_002dname_003a"></a>
+<a class="index-entry-id" id="index-SQL"></a>
+
+<p>Each SQL query (or script) that should be used from you application must have a &lsquo;<samp class="samp">-- name:</samp>&rsquo; comment right
+above the actual query. This name is also used as the function name in your Lisp image.
+</p>
+<p>Here&rsquo;s an example query definition:
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: get-all-articles
+-- Retrieve all articles.
+select *
+from articles
+;
+</pre></div>
+
+<p>Every comment between the &lsquo;<samp class="samp">--name:</samp>&rsquo; token and the actual SQL query is transformed into the function&rsquo;s
+docstring.
+</p>
+<hr>
+</div>
+<div class="chapter-level-extent" id="Loading-Queries">
+<div class="nav-panel">
+<p>
+Next: <a href="#Query-Name-Semantics" accesskey="n" rel="next">Query Name Semantics</a>, Previous: <a href="#Defining-Queries" accesskey="p" rel="prev">Defining Queries</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Loading-Queries-1"><span>2 Loading Queries<a class="copiable-link" href="#Loading-Queries-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-Loading-queries"></a>
+
+<p>To load the queries into your Lisp image and generate functions for it, use <a class="ref" href="#Macro-load_002dsql">load-sql</a>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(jasql:load-sql &quot;path/to/sql&quot; :system &quot;blog&quot;)
+</pre></div>
+
+<hr>
+</div>
+<div class="chapter-level-extent" id="Query-Name-Semantics">
+<div class="nav-panel">
+<p>
+Next: <a href="#Implementing-an-Database-Adapter" accesskey="n" rel="next">Implementing an Database Adapter</a>, Previous: <a href="#Loading-Queries" accesskey="p" rel="prev">Loading Queries</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Query-Name-Semantics-1"><span>3 Query Name Semantics<a class="copiable-link" href="#Query-Name-Semantics-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-_002d_002dname_003a-1"></a>
+<a class="index-entry-id" id="index-naming-semantics"></a>
+<a class="index-entry-id" id="index-select"></a>
+
+<p>A query&rsquo;s name can have several suffixes with different semantics about the queries. &lsquo;<samp class="samp">jasql</samp>&rsquo; determines how a
+query should be executes on the basis of that suffix. Without any suffix the statement is a <code class="code">select</code> statement
+returning possibly multiple rows.
+</p>
+
+<ul class="mini-toc">
+<li><a href="#Insert-returning-with-_003c_0021" accesskey="1">Insert returning with <code class="code">&lt;!</code></a></li>
+<li><a href="#Insert_002fUpdate_002fDelete-with-_0021" accesskey="2">Insert/Update/Delete with <code class="code">!</code></a></li>
+<li><a href="#Bulk-operations-with-_002a_0021" accesskey="3">Bulk operations with <code class="code">*!</code></a></li>
+<li><a href="#Execute-script-with-_0023" accesskey="4">Execute script with <code class="code">#</code></a></li>
+<li><a href="#Select-one-with-_003f" accesskey="5">Select one with <code class="code">?</code></a></li>
+</ul>
+<hr>
+<div class="section-level-extent" id="Insert-returning-with-_003c_0021">
+<div class="nav-panel">
+<p>
+Next: <a href="#Insert_002fUpdate_002fDelete-with-_0021" accesskey="n" rel="next">Insert/Update/Delete with <code class="code">!</code></a>, Up: <a href="#Query-Name-Semantics" accesskey="u" rel="up">Query Name Semantics</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h3 class="section" id="Insert-returning-with-_003c_0021-1"><span>3.1 Insert returning with <code class="code">&lt;!</code><a class="copiable-link" href="#Insert-returning-with-_003c_0021-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-insert-returning"></a>
+<a class="index-entry-id" id="index-_003c_0021"></a>
+
+<p>A name ending with <code class="code">&lt;!</code> defines an insert that returns a specific value. Mostly this is used to return some
+generated value by the database, such as &lsquo;<samp class="samp">lastrowid</samp>&rsquo; (for SQLite). 
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: add-new-article&lt;!
+-- Inserts a new article and returns the ID.
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, :author, :content)
+;
+</pre></div>
+
+<p>PostgesSQL however allows multiple values to be returned with the <code class="code">returning</code> clause:
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: add-new-article&lt;!
+-- Inserts an new article and returns ID and title.
+insert into articles
+(title, author, content)
+values
+(:title, :author, :content)
+returning _id, title
+;
+</pre></div>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Insert_002fUpdate_002fDelete-with-_0021">
+<div class="nav-panel">
+<p>
+Next: <a href="#Bulk-operations-with-_002a_0021" accesskey="n" rel="next">Bulk operations with <code class="code">*!</code></a>, Previous: <a href="#Insert-returning-with-_003c_0021" accesskey="p" rel="prev">Insert returning with <code class="code">&lt;!</code></a>, Up: <a href="#Query-Name-Semantics" accesskey="u" rel="up">Query Name Semantics</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h3 class="section" id="Insert_002fUpdate_002fDelete-with-_0021-1"><span>3.2 Insert/Update/Delete with <code class="code">!</code><a class="copiable-link" href="#Insert_002fUpdate_002fDelete-with-_0021-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-insert-update-delete-many"></a>
+<a class="index-entry-id" id="index-_0021"></a>
+
+<p>Any operation of <code class="code">insert</code>, <code class="code">update</code> or <code class="code">delete</code> must have a &lsquo;<samp class="samp">!</samp>&rsquo; suffix. They don&rsquo;t return anything. 
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: insert-article-for-src!
+-- Insert an article with src as author
+INSERT INTO articles
+(title, author, content)
+VALUES
+(:title, 'src', :content)
+;
+</pre></div>
+
+<p>Or with delete:
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: delete-article!
+-- Deletes an article
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+</pre></div>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Bulk-operations-with-_002a_0021">
+<div class="nav-panel">
+<p>
+Next: <a href="#Execute-script-with-_0023" accesskey="n" rel="next">Execute script with <code class="code">#</code></a>, Previous: <a href="#Insert_002fUpdate_002fDelete-with-_0021" accesskey="p" rel="prev">Insert/Update/Delete with <code class="code">!</code></a>, Up: <a href="#Query-Name-Semantics" accesskey="u" rel="up">Query Name Semantics</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h3 class="section" id="Bulk-operations-with-_002a_0021-1"><span>3.3 Bulk operations with <code class="code">*!</code><a class="copiable-link" href="#Bulk-operations-with-_002a_0021-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-insert-update-delete-many-1"></a>
+<a class="index-entry-id" id="index-_002a_0021"></a>
+<a class="index-entry-id" id="index-bulk-operation"></a>
+
+<p>For statements that insert/update/delete many values use the <code class="code">*!</code> suffix. The generated function expected a
+list of lists of arguments.
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: delete-many*!
+-- Delete a bunch of articles
+DELETE FROM articles
+WHERE article_id = :article_id
+;
+</pre></div>
+
+<p>And on the lisp side, execute the function like this:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(delete-many
+ *db*
+ '((:article_id 5)
+   (:article_id 24)
+   (:article_id 43)
+   (:article_id 334)))
+</pre></div>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Execute-script-with-_0023">
+<div class="nav-panel">
+<p>
+Next: <a href="#Select-one-with-_003f" accesskey="n" rel="next">Select one with <code class="code">?</code></a>, Previous: <a href="#Bulk-operations-with-_002a_0021" accesskey="p" rel="prev">Bulk operations with <code class="code">*!</code></a>, Up: <a href="#Query-Name-Semantics" accesskey="u" rel="up">Query Name Semantics</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h3 class="section" id="Execute-script-with-_0023-1"><span>3.4 Execute script with <code class="code">#</code><a class="copiable-link" href="#Execute-script-with-_0023-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-execute-script"></a>
+<a class="index-entry-id" id="index-_0023"></a>
+
+
+<p>Sometimes a statements doesn&rsquo;t take any parameters (e.g. <code class="code">create table</code>) then use the <code class="code">#</code> suffix.
+</p>
+<div class="example">
+<pre class="example-preformatted">-- name: create-articles-table#
+-- Creates the articles table
+CREATE TABLE articles
+(
+  article_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  author TEXT NOT NULL,
+  content TEXT NOT NULL
+)
+;
+</pre></div>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Select-one-with-_003f">
+<div class="nav-panel">
+<p>
+Previous: <a href="#Execute-script-with-_0023" accesskey="p" rel="prev">Execute script with <code class="code">#</code></a>, Up: <a href="#Query-Name-Semantics" accesskey="u" rel="up">Query Name Semantics</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h3 class="section" id="Select-one-with-_003f-1"><span>3.5 Select one with <code class="code">?</code><a class="copiable-link" href="#Select-one-with-_003f-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-select-on-row"></a>
+<a class="index-entry-id" id="index-_003f"></a>
+
+<p>Sometimes a query produces a single result. Every query with a <code class="code">?</code> suffix returns a single row.
+</p>
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Implementing-an-Database-Adapter">
+<div class="nav-panel">
+<p>
+Next: <a href="#Directory" accesskey="n" rel="next">Directory</a>, Previous: <a href="#Query-Name-Semantics" accesskey="p" rel="prev">Query Name Semantics</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Implementing-an-Database-Adapter-1"><span>4 Implementing an Database Adapter<a class="copiable-link" href="#Implementing-an-Database-Adapter-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-implementing-an-database-adapter"></a>
+<a class="index-entry-id" id="index-adapter-protocol"></a>
+
+<p>Implementing a new adapter means specializing the adapter protocol to your adapter type. Following is an
+implementation for SQLite:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(defun escape-parameters (params)
+  (labels ((recu (params result)
+             (cond
+               ((null params)
+                (reverse result))
+               ((keywordp (first params))
+                (recu (rest params)
+                      (cons (format nil &quot;:~A&quot; (string-downcase (string (first params)))) result)))
+               ((consp (first params))
+                (recu (rest params)
+                      (cons (recu (first params) '()) result)))
+               (t
+                (recu (rest params) (cons (first params) result))))))
+    (recu params '())))
+
+
+(defmacro with-escaped-parameters ((parameters) &amp;body body)
+  (let ((gparams (gensym &quot;params&quot;)))
+    `(let* ((,gparams (escape-parameters ,parameters))
+            (,(intern (symbol-name parameters)) ,gparams))
+       ,@body)))
+
+
+(defmethod insert-returning ((db sqlite-handle) sql &amp;optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters))
+  (sqlite:last-insert-rowid db))
+
+
+(defmethod insert-update-delete ((db sqlite-handle) sql &amp;optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-non-query/named db sql parameters)))
+
+
+(defmethod insert-update-delete-many ((db sqlite-handle) sql &amp;optional parameters-list)
+  (with-escaped-parameters (parameters-list)
+    (sqlite:with-transaction db
+      (loop for parameters in parameters-list
+            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
+
+
+(defmethod execute-script ((db sqlite-handle) sql)
+  (sqlite:execute-non-query db sql))
+
+
+(defmethod select-one-row ((db sqlite-handle) sql &amp;optional parameters)
+  (with-escaped-parameters (parameters)
+    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
+      (when (=  1 (length result))
+        (first result)))))
+
+
+(defmethod select ((db sqlite-handle) sql &amp;optional parameters)
+  (with-escaped-parameters (parameters)
+    (apply #'sqlite:execute-to-list/named db sql parameters)))
+</pre></div>
+
+<hr>
+</div>
+<div class="chapter-level-extent" id="Directory">
+<div class="nav-panel">
+<p>
+Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="#Implementing-an-Database-Adapter" accesskey="p" rel="prev">Implementing an Database Adapter</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Directory-1"><span>5 Directory<a class="copiable-link" href="#Directory-1"> &para;</a></span></h2>
+
+
+
+
+
+
+
+
+<a class="index-entry-id" id="index-execute_002dscript"></a>
+<a class="anchor" id="Generic_002dFunction-execute_002dscript"></a><dl class="first-deffn">
+<dt class="deffn" id="index-execute_002dscript-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">execute-script</strong> <var class="def-var-arguments">db sql</var><a class="copiable-link" href="#index-execute_002dscript-1"> &para;</a></span></dt>
+<dd><p>Run <code class="code">sql</code> without any variable substitution.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-insert_002dupdate_002ddelete"></a>
+<a class="anchor" id="Generic_002dFunction-insert_002dupdate_002ddelete"></a><dl class="first-deffn">
+<dt class="deffn" id="index-insert_002dupdate_002ddelete-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">insert-update-delete</strong> <var class="def-var-arguments">db sql &amp;optional parameters</var><a class="copiable-link" href="#index-insert_002dupdate_002ddelete-1"> &para;</a></span></dt>
+<dd><p>Run an <code class="code">insert/update/delete</code> statement.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-insert_002dupdate_002ddelete_002dmany"></a>
+<a class="anchor" id="Generic_002dFunction-insert_002dupdate_002ddelete_002dmany"></a><dl class="first-deffn">
+<dt class="deffn" id="index-insert_002dupdate_002ddelete_002dmany-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">insert-update-delete-many</strong> <var class="def-var-arguments">db sql &amp;optional parameters-list</var><a class="copiable-link" href="#index-insert_002dupdate_002ddelete_002dmany-1"> &para;</a></span></dt>
+<dd><p>Run an <code class="code">insert/update/delete</code> statement in bulk.
+</p>
+<p><code class="code">parameters-list</code> is a list of parameters that would have been passed to
+&lsquo;insert-update-delete&rsquo;.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-load_002dsql"></a>
+<a class="anchor" id="Macro-load_002dsql"></a><dl class="first-deffn">
+<dt class="deffn" id="index-load_002dsql-1"><span class="category-def">Macro: </span><span><strong class="def-name">load-sql</strong> <var class="def-var-arguments">path &amp;key system</var><a class="copiable-link" href="#index-load_002dsql-1"> &para;</a></span></dt>
+<dd><p>Load <code class="code">sql</code> and generate <code class="code">db</code> access functions.
+</p>
+<p><code class="code">path</code> is either a <code class="code">sql</code> file or a directory that contains <code class="code">sql</code> files. If
+<code class="code">path</code> is relative, it is assumed to be relative to <code class="code">system</code>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-docstring"></a>
+<a class="anchor" id="Function-docstring"></a><dl class="first-deffn">
+<dt class="deffn" id="index-docstring-1"><span class="category-def">Function: </span><span><strong class="def-name">docstring</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-docstring-1"> &para;</a></span></dt>
+<dd><p>Return docstring of <code class="code">symbol</code>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-insert_002dreturning"></a>
+<a class="anchor" id="Generic_002dFunction-insert_002dreturning"></a><dl class="first-deffn">
+<dt class="deffn" id="index-insert_002dreturning-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">insert-returning</strong> <var class="def-var-arguments">db sql &amp;optional parameters</var><a class="copiable-link" href="#index-insert_002dreturning-1"> &para;</a></span></dt>
+<dd><p>Run <code class="code">insert</code> statement and return auto-generated
+  value.
+</p>
+<p>An auto-generated value can be the (e.g.) <code class="code">id</code> of the last inserted
+value.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-paramaters"></a>
+<a class="anchor" id="Function-paramaters"></a><dl class="first-deffn">
+<dt class="deffn" id="index-paramaters-1"><span class="category-def">Function: </span><span><strong class="def-name">paramaters</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-paramaters-1"> &para;</a></span></dt>
+<dd><p>Parameters used in <code class="code">sql</code> for <code class="code">symbol</code>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-select-1"></a>
+<a class="anchor" id="Generic_002dFunction-select"></a><dl class="first-deffn">
+<dt class="deffn" id="index-select-2"><span class="category-def">Generic Function: </span><span><strong class="def-name">select</strong> <var class="def-var-arguments">db sql &amp;optional parameters</var><a class="copiable-link" href="#index-select-2"> &para;</a></span></dt>
+<dd><p>Run <code class="code">select</code> statement.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-select_002done_002drow"></a>
+<a class="anchor" id="Generic_002dFunction-select_002done_002drow"></a><dl class="first-deffn">
+<dt class="deffn" id="index-select_002done_002drow-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">select-one-row</strong> <var class="def-var-arguments">db sql &amp;optional parameters</var><a class="copiable-link" href="#index-select_002done_002drow-1"> &para;</a></span></dt>
+<dd><p>Run <code class="code">select</code> and return a single row.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-sql"></a>
+<a class="anchor" id="Function-sql"></a><dl class="first-deffn">
+<dt class="deffn" id="index-sql-1"><span class="category-def">Function: </span><span><strong class="def-name">sql</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-sql-1"> &para;</a></span></dt>
+<dd><p>Return <code class="code">sql</code> used by <code class="code">symbol</code>.
+</p></dd></dl>
+
+
+<hr>
+</div>
+<div class="appendix-level-extent" id="GNU-Free-Documentation-License">
+<div class="nav-panel">
+<p>
+Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previous: <a href="#Directory" accesskey="p" rel="prev">Directory</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="appendix" id="GNU-Free-Documentation-License-1"><span>Appendix A GNU Free Documentation License<a class="copiable-link" href="#GNU-Free-Documentation-License-1"> &para;</a></span></h2>
+
+<p>GNU Free Documentation License
+Version 1.3, 3 November 2008
+</p>
+
+<p>Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+<a class="uref" href="https://fsf.org/">https://fsf.org/</a>
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+</p>
+<ol class="enumerate">
+<li> PREAMBLE
+</li></ol>
+
+<p>The purpose of this License is to make a manual, textbook, or other
+functional and useful document &ldquo;free&rdquo; in the sense of freedom: to
+assure everyone the effective freedom to copy and redistribute it,
+with or without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible
+for modifications made by others.
+</p>
+<p>This License is a kind of &ldquo;copyleft&rdquo;, which means that derivative
+works of the document must themselves be free in the same sense.  It
+complements the GNU General Public License, which is a copyleft
+license designed for free software.
+</p>
+<p>We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free
+program should come with manuals providing the same freedoms that the
+software does.  But this License is not limited to software manuals;
+it can be used for any textual work, regardless of subject matter or
+whether it is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or reference.
+</p>
+
+<ol class="enumerate">
+<li> APPLICABILITY AND DEFINITIONS
+</li></ol>
+
+<p>This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License.  Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein.  The &ldquo;Document&rdquo;, below,
+refers to any such manual or work.  Any member of the public is a
+licensee, and is addressed as &ldquo;you&rdquo;.  You accept the license if you
+copy, modify or distribute the work in a way requiring permission
+under copyright law.
+</p>
+<p>A &ldquo;Modified Version&rdquo; of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.
+</p>
+<p>A &ldquo;Secondary Section&rdquo; is a named appendix or a front-matter section of
+the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document&rsquo;s overall
+subject (or to related matters) and contains nothing that could fall
+directly within that overall subject.  (Thus, if the Document is in
+part a textbook of mathematics, a Secondary Section may not explain
+any mathematics.)  The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding
+them.
+</p>
+<p>The &ldquo;Invariant Sections&rdquo; are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice
+that says that the Document is released under this License.  If a
+section does not fit the above definition of Secondary then it is not
+allowed to be designated as Invariant.  The Document may contain zero
+Invariant Sections.  If the Document does not identify any Invariant
+Sections then there are none.
+</p>
+<p>The &ldquo;Cover Texts&rdquo; are certain short passages of text that are listed,
+as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+the Document is released under this License.  A Front-Cover Text may
+be at most 5 words, and a Back-Cover Text may be at most 25 words.
+</p>
+<p>A &ldquo;Transparent&rdquo; copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the
+general public, that is suitable for revising the document
+straightforwardly with generic text editors or (for images composed of
+pixels) generic paint programs or (for drawings) some widely available
+drawing editor, and that is suitable for input to text formatters or
+for automatic translation to a variety of formats suitable for input
+to text formatters.  A copy made in an otherwise Transparent file
+format whose markup, or absence of markup, has been arranged to thwart
+or discourage subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount
+of text.  A copy that is not &ldquo;Transparent&rdquo; is called &ldquo;Opaque&rdquo;.
+</p>
+<p>Examples of suitable formats for Transparent copies include plain
+ASCII without markup, Texinfo input format, LaTeX input format, SGML
+or XML using a publicly available DTD, and standard-conforming simple
+HTML, PostScript or PDF designed for human modification.  Examples of
+transparent image formats include PNG, XCF and JPG.  Opaque formats
+include proprietary formats that can be read and edited only by
+proprietary word processors, SGML or XML for which the DTD and/or
+processing tools are not generally available, and the
+machine-generated HTML, PostScript or PDF produced by some word
+processors for output purposes only.
+</p>
+<p>The &ldquo;Title Page&rdquo; means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page.  For works in
+formats which do not have any title page as such, &ldquo;Title Page&rdquo; means
+the text near the most prominent appearance of the work&rsquo;s title,
+preceding the beginning of the body of the text.
+</p>
+<p>The &ldquo;publisher&rdquo; means any person or entity that distributes copies of
+the Document to the public.
+</p>
+<p>A section &ldquo;Entitled XYZ&rdquo; means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language.  (Here XYZ stands for a
+specific section name mentioned below, such as &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, &ldquo;Endorsements&rdquo;, or &ldquo;History&rdquo;.)  To &ldquo;Preserve the Title&rdquo;
+of such a section when you modify the Document means that it remains a
+section &ldquo;Entitled XYZ&rdquo; according to this definition.
+</p>
+<p>The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document.  These Warranty
+Disclaimers are considered to be included by reference in this
+License, but only as regards disclaiming warranties: any other
+implication that these Warranty Disclaimers may have is void and has
+no effect on the meaning of this License.
+</p>
+<ol class="enumerate">
+<li> VERBATIM COPYING
+</li></ol>
+
+<p>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies
+to the Document are reproduced in all copies, and that you add no
+other conditions whatsoever to those of this License.  You may not use
+technical measures to obstruct or control the reading or further
+copying of the copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a large enough
+number of copies you must also follow the conditions in section 3.
+</p>
+<p>You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.
+</p>
+
+<ol class="enumerate">
+<li> COPYING IN QUANTITY
+</li></ol>
+
+<p>If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document&rsquo;s license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover
+Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+the back cover.  Both covers must also clearly and legibly identify
+you as the publisher of these copies.  The front cover must present
+the full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in addition.
+Copying with changes limited to the covers, as long as they preserve
+the title of the Document and satisfy these conditions, can be treated
+as verbatim copying in other respects.
+</p>
+<p>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.
+</p>
+<p>If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy
+a computer-network location from which the general network-using
+public has access to download using public-standard network protocols
+a complete Transparent copy of the Document, free of added material.
+If you use the latter option, you must take reasonably prudent steps,
+when you begin distribution of Opaque copies in quantity, to ensure
+that this Transparent copy will remain thus accessible at the stated
+location until at least one year after the last time you distribute an
+Opaque copy (directly or through your agents or retailers) of that
+edition to the public.
+</p>
+<p>It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to
+give them a chance to provide you with an updated version of the
+Document.
+</p>
+
+<ol class="enumerate">
+<li> MODIFICATIONS
+</li></ol>
+
+<p>You may copy and distribute a Modified Version of the Document under
+the conditions of sections 2 and 3 above, provided that you release
+the Modified Version under precisely this License, with the Modified
+Version filling the role of the Document, thus licensing distribution
+and modification of the Modified Version to whoever possesses a copy
+of it.  In addition, you must do these things in the Modified Version:
+</p>
+<p>A. Use in the Title Page (and on the covers, if any) a title distinct
+from that of the Document, and from those of previous versions
+(which should, if there were any, be listed in the History section
+of the Document).  You may use the same title as a previous version
+if the original publisher of that version gives permission.
+B. List on the Title Page, as authors, one or more persons or entities
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
+C. State on the Title page the name of the publisher of the
+Modified Version, as the publisher.
+D. Preserve all the copyright notices of the Document.
+E. Add an appropriate copyright notice for your modifications
+adjacent to the other copyright notices.
+F. Include, immediately after the copyright notices, a license notice
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.
+G. Preserve in that license notice the full lists of Invariant Sections
+and required Cover Texts given in the Document&rsquo;s license notice.
+H. Include an unaltered copy of this License.
+I. Preserve the section Entitled &ldquo;History&rdquo;, Preserve its Title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page.  If
+there is no section Entitled &ldquo;History&rdquo; in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.
+J. Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise
+the network locations given in the Document for previous versions
+it was based on.  These may be placed in the &ldquo;History&rdquo; section.
+You may omit a network location for a work that was published at
+least four years before the Document itself, or if the original
+publisher of the version it refers to gives permission.
+K. For any section Entitled &ldquo;Acknowledgements&rdquo; or &ldquo;Dedications&rdquo;,
+Preserve the Title of the section, and preserve in the section all
+the substance and tone of each of the contributor acknowledgements
+and/or dedications given therein.
+L. Preserve all the Invariant Sections of the Document,
+unaltered in their text and in their titles.  Section numbers
+or the equivalent are not considered part of the section titles.
+M. Delete any section Entitled &ldquo;Endorsements&rdquo;.  Such a section
+may not be included in the Modified Version.
+N. Do not retitle any existing section to be Entitled &ldquo;Endorsements&rdquo;
+or to conflict in title with any Invariant Section.
+O. Preserve any Warranty Disclaimers.
+</p>
+<p>If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no material
+copied from the Document, you may at your option designate some or all
+of these sections as invariant.  To do this, add their titles to the
+list of Invariant Sections in the Modified Version&rsquo;s license notice.
+These titles must be distinct from any other section titles.
+</p>
+<p>You may add a section Entitled &ldquo;Endorsements&rdquo;, provided it contains
+nothing but endorsements of your Modified Version by various
+parties&ndash;for example, statements of peer review or that the text has
+been approved by an organization as the authoritative definition of a
+standard.
+</p>
+<p>You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version.  Only one passage of
+Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity.  If the Document already
+includes a cover text for the same cover, previously added by you or
+by arrangement made by the same entity you are acting on behalf of,
+you may not add another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.
+</p>
+<p>The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.
+</p>
+
+<ol class="enumerate">
+<li> COMBINING DOCUMENTS
+</li></ol>
+
+<p>You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its
+license notice, and that you preserve all their Warranty Disclaimers.
+</p>
+<p>The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy.  If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by
+adding at the end of it, in parentheses, the name of the original
+author or publisher of that section if known, or else a unique number.
+Make the same adjustment to the section titles in the list of
+Invariant Sections in the license notice of the combined work.
+</p>
+<p>In the combination, you must combine any sections Entitled &ldquo;History&rdquo;
+in the various original documents, forming one section Entitled
+&ldquo;History&rdquo;; likewise combine any sections Entitled &ldquo;Acknowledgements&rdquo;,
+and any sections Entitled &ldquo;Dedications&rdquo;.  You must delete all sections
+Entitled &ldquo;Endorsements&rdquo;.
+</p>
+
+<ol class="enumerate">
+<li> COLLECTIONS OF DOCUMENTS
+</li></ol>
+
+<p>You may make a collection consisting of the Document and other
+documents released under this License, and replace the individual
+copies of this License in the various documents with a single copy
+that is included in the collection, provided that you follow the rules
+of this License for verbatim copying of each of the documents in all
+other respects.
+</p>
+<p>You may extract a single document from such a collection, and
+distribute it individually under this License, provided you insert a
+copy of this License into the extracted document, and follow this
+License in all other respects regarding verbatim copying of that
+document.
+</p>
+
+<ol class="enumerate">
+<li> AGGREGATION WITH INDEPENDENT WORKS
+</li></ol>
+
+<p>A compilation of the Document or its derivatives with other separate
+and independent documents or works, in or on a volume of a storage or
+distribution medium, is called an &ldquo;aggregate&rdquo; if the copyright
+resulting from the compilation is not used to limit the legal rights
+of the compilation&rsquo;s users beyond what the individual works permit.
+When the Document is included in an aggregate, this License does not
+apply to the other works in the aggregate which are not themselves
+derivative works of the Document.
+</p>
+<p>If the Cover Text requirement of section 3 is applicable to these
+copies of the Document, then if the Document is less than one half of
+the entire aggregate, the Document&rsquo;s Cover Texts may be placed on
+covers that bracket the Document within the aggregate, or the
+electronic equivalent of covers if the Document is in electronic form.
+Otherwise they must appear on printed covers that bracket the whole
+aggregate.
+</p>
+
+<ol class="enumerate">
+<li> TRANSLATION
+</li></ol>
+
+<p>Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section 4.
+Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections.  You may include a
+translation of this License, and all the license notices in the
+Document, and any Warranty Disclaimers, provided that you also include
+the original English version of this License and the original versions
+of those notices and disclaimers.  In case of a disagreement between
+the translation and the original version of this License or a notice
+or disclaimer, the original version will prevail.
+</p>
+<p>If a section in the Document is Entitled &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, or &ldquo;History&rdquo;, the requirement (section 4) to Preserve
+its Title (section 1) will typically require changing the actual
+title.
+</p>
+
+<ol class="enumerate">
+<li> TERMINATION
+</li></ol>
+
+<p>You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense, or distribute it is void, and
+will automatically terminate your rights under this License.
+</p>
+<p>However, if you cease all violation of this License, then your license
+from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.
+</p>
+<p>Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+</p>
+<p>Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, receipt of a copy of some or all of the same material does
+not give you any rights to use it.
+</p>
+
+<ol class="enumerate">
+<li> FUTURE REVISIONS OF THIS LICENSE
+</li></ol>
+
+<p>The Free Software Foundation may publish new, revised versions of the
+GNU Free Documentation License from time to time.  Such new versions
+will be similar in spirit to the present version, but may differ in
+detail to address new problems or concerns.  See
+<a class="uref" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.
+</p>
+<p>Each version of the License is given a distinguishing version number.
+If the Document specifies that a particular numbered version of this
+License &ldquo;or any later version&rdquo; applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation.  If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.  If the Document
+specifies that a proxy can decide which future versions of this
+License can be used, that proxy&rsquo;s public statement of acceptance of a
+version permanently authorizes you to choose that version for the
+Document.
+</p>
+<ol class="enumerate">
+<li> RELICENSING
+</li></ol>
+
+<p>&ldquo;Massive Multiauthor Collaboration Site&rdquo; (or &ldquo;MMC Site&rdquo;) means any
+World Wide Web server that publishes copyrightable works and also
+provides prominent facilities for anybody to edit those works.  A
+public wiki that anybody can edit is an example of such a server.  A
+&ldquo;Massive Multiauthor Collaboration&rdquo; (or &ldquo;MMC&rdquo;) contained in the site
+means any set of copyrightable works thus published on the MMC site.
+</p>
+<p>&ldquo;CC-BY-SA&rdquo; means the Creative Commons Attribution-Share Alike 3.0 
+license published by Creative Commons Corporation, a not-for-profit 
+corporation with a principal place of business in San Francisco, 
+California, as well as future copyleft versions of that license 
+published by that same organization.
+</p>
+<p>&ldquo;Incorporate&rdquo; means to publish or republish a Document, in whole or in 
+part, as part of another Document.
+</p>
+<p>An MMC is &ldquo;eligible for relicensing&rdquo; if it is licensed under this 
+License, and if all works that were first published under this License 
+somewhere other than this MMC, and subsequently incorporated in whole or 
+in part into the MMC, (1) had no cover texts or invariant sections, and 
+(2) were thus incorporated prior to November 1, 2008.
+</p>
+<p>The operator of an MMC Site may republish an MMC contained in the site
+under CC-BY-SA on the same site at any time before August 1, 2009,
+provided the MMC is eligible for relicensing.
+</p>
+
+<p>ADDENDUM: How to use this License for your documents
+</p>
+<p>To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and
+license notices just after the title page:
+</p>
+<p>Copyright (c)  YEAR  YOUR NAME.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled &ldquo;GNU
+Free Documentation License&rdquo;.
+</p>
+<p>If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
+replace the &ldquo;with&hellip;Texts.&rdquo; line with this:
+</p>
+<p>with the Invariant Sections being LIST THEIR TITLES, with the
+Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
+</p>
+<p>If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+</p>
+<p>If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License,
+to permit their use in free software.
+</p>
+<hr>
+</div>
+<div class="chapter-level-extent" id="Concept-Index">
+<div class="nav-panel">
+<p>
+Next: <a href="#Functions-and-Macro-Index" accesskey="n" rel="next">Functions and Macro Index</a>, Previous: <a href="#GNU-Free-Documentation-License" accesskey="p" rel="prev">GNU Free Documentation License</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Concept-Index-1"><span>B Concept Index<a class="copiable-link" href="#Concept-Index-1"> &para;</a></span></h2>
+
+<div class="printindex cp-printindex">
+<table class="cp-letters-header-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-1"><b>-</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-2"><b>!</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-3"><b>?</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-4"><b>*</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-5"><b>#</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-6"><b>&lt;</b></a>
+ &nbsp; 
+<br>
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-N"><b>N</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+</td></tr></table>
+<table class="cp-entries-printindex" border="0">
+<tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-1">-</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_002d_002dname_003a">&ndash;name:</a></td><td class="printindex-index-section"><a href="#Defining-Queries">Defining Queries</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_002d_002dname_003a-1">&ndash;name:</a></td><td class="printindex-index-section"><a href="#Query-Name-Semantics">Query Name Semantics</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-2">!</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_0021">!</a></td><td class="printindex-index-section"><a href="#Insert_002fUpdate_002fDelete-with-_0021">Insert/Update/Delete with <code class="code">!</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-3">?</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_003f">?</a></td><td class="printindex-index-section"><a href="#Select-one-with-_003f">Select one with <code class="code">?</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-4">*</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_002a_0021">*!</a></td><td class="printindex-index-section"><a href="#Bulk-operations-with-_002a_0021">Bulk operations with <code class="code">*!</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-5">#</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_0023">#</a></td><td class="printindex-index-section"><a href="#Execute-script-with-_0023">Execute script with <code class="code">#</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-6">&lt;</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_003c_0021">&lt;!</a></td><td class="printindex-index-section"><a href="#Insert-returning-with-_003c_0021">Insert returning with <code class="code">&lt;!</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-A">A</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-adapter-protocol">adapter protocol</a></td><td class="printindex-index-section"><a href="#Implementing-an-Database-Adapter">Implementing an Database Adapter</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-B">B</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-bulk-operation">bulk operation</a></td><td class="printindex-index-section"><a href="#Bulk-operations-with-_002a_0021">Bulk operations with <code class="code">*!</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-D">D</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-Defining-Queries">Defining Queries</a></td><td class="printindex-index-section"><a href="#Defining-Queries">Defining Queries</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-execute-script">execute script</a></td><td class="printindex-index-section"><a href="#Execute-script-with-_0023">Execute script with <code class="code">#</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-I">I</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-implementing-an-database-adapter">implementing an database adapter</a></td><td class="printindex-index-section"><a href="#Implementing-an-Database-Adapter">Implementing an Database Adapter</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert-returning">insert returning</a></td><td class="printindex-index-section"><a href="#Insert-returning-with-_003c_0021">Insert returning with <code class="code">&lt;!</code></a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert-update-delete-many">insert update delete many</a></td><td class="printindex-index-section"><a href="#Insert_002fUpdate_002fDelete-with-_0021">Insert/Update/Delete with <code class="code">!</code></a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert-update-delete-many-1">insert update delete many</a></td><td class="printindex-index-section"><a href="#Bulk-operations-with-_002a_0021">Bulk operations with <code class="code">*!</code></a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-L">L</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-Loading-queries">Loading queries</a></td><td class="printindex-index-section"><a href="#Loading-Queries">Loading Queries</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-N">N</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-naming-semantics">naming semantics</a></td><td class="printindex-index-section"><a href="#Query-Name-Semantics">Query Name Semantics</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-S">S</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select">select</a></td><td class="printindex-index-section"><a href="#Query-Name-Semantics">Query Name Semantics</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select-on-row">select on row</a></td><td class="printindex-index-section"><a href="#Select-one-with-_003f">Select one with <code class="code">?</code></a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-SQL">SQL</a></td><td class="printindex-index-section"><a href="#Defining-Queries">Defining Queries</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+</table>
+<table class="cp-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-1"><b>-</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-2"><b>!</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-3"><b>?</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-4"><b>*</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-5"><b>#</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_symbol-6"><b>&lt;</b></a>
+ &nbsp; 
+<br>
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-N"><b>N</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-Index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+</td></tr></table>
+</div>
+
+<hr>
+</div>
+<div class="chapter-level-extent" id="Functions-and-Macro-Index">
+<div class="nav-panel">
+<p>
+Previous: <a href="#Concept-Index" accesskey="p" rel="prev">Concept Index</a>, Up: <a href="#Top" accesskey="u" rel="up">jasql Manuel 0.7</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<h2 class="chapter" id="Functions-and-Macro-Index-1"><span>C Functions and Macro Index<a class="copiable-link" href="#Functions-and-Macro-Index-1"> &para;</a></span></h2>
+
+<div class="printindex fn-printindex">
+<table class="fn-letters-header-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-S"><b>S</b></a>
+ &nbsp; 
+</td></tr></table>
+<table class="fn-entries-printindex" border="0">
+<tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-D">D</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-docstring"><code>docstring</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-docstring-1"><code>docstring</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-execute_002dscript"><code>execute-script</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-execute_002dscript-1"><code>execute-script</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-I">I</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dreturning"><code>insert-returning</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dreturning-1"><code>insert-returning</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dupdate_002ddelete"><code>insert-update-delete</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dupdate_002ddelete-1"><code>insert-update-delete</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dupdate_002ddelete_002dmany"><code>insert-update-delete-many</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dupdate_002ddelete_002dmany-1"><code>insert-update-delete-many</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-L">L</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-load_002dsql"><code>load-sql</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-load_002dsql-1"><code>load-sql</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-P">P</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-paramaters"><code>paramaters</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-paramaters-1"><code>paramaters</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Functions-and-Macro-Index_fn_letter-S">S</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select-1"><code>select</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select-2"><code>select</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select_002done_002drow"><code>select-one-row</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-select_002done_002drow-1"><code>select-one-row</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-sql"><code>sql</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-sql-1"><code>sql</code></a></td><td class="printindex-index-section"><a href="#Directory">Directory</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+</table>
+<table class="fn-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Functions-and-Macro-Index_fn_letter-S"><b>S</b></a>
+ &nbsp; 
+</td></tr></table>
+</div>
+
+</div>
+</div>
+
+
+
+</body>
+</html>
