@@ -67,6 +67,8 @@ installdirs:
 
 info: jasql.info
 
+html: index.html
+
 jasql.info: doc/jasql.texi doc/dict.texi
 	$(MAKEINFO) $(srcdir)/doc/jasql.texi
 
@@ -89,7 +91,7 @@ README.txt: doc/README.org version
 	$(EMACS) $< $(EMACSFLAGS) -l $(srcdir)/doc/org-export.el  -f org-ascii-export-to-ascii
 
 .PHONY:
-docs: info README.txt
+docs: info html README.txt
 
 check:
 	$(LISP) $(LISPFLAGS) \
