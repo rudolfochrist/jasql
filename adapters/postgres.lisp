@@ -136,7 +136,7 @@
 (defmethod insert-returning ((db postgres-handle) sql &optional parameters)
   (with-postmodern-connection (db)
     (with-prepared-statement (func params)
-        (sql parameters :row)
+        (sql parameters :single)
       (apply func params))))
 
 
@@ -162,14 +162,14 @@
 (defmethod select-one-row ((db postgres-handle) sql &optional parameters)
   (with-postmodern-connection (db)
     (with-prepared-statement (func params)
-        (sql parameters :row)
+        (sql parameters :plist)
       (apply func params))))
 
 
 (defmethod select ((db postgres-handle) sql &optional parameters)
   (with-postmodern-connection (db)
     (with-prepared-statement (func params)
-        (sql parameters :rows)
+        (sql parameters :plists)
       (apply func params))))
 
 

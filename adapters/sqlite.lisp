@@ -54,13 +54,32 @@
   (sqlite:execute-non-query db sql))
 
 
+(defun make-keyword (string)
+  (let ((symbol-name (nstring-upcase string)))
+    (or (find-symbol symbol-name :keyword)
+        (intern symbol-name :keyword))))
+
+
 (defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
   (with-escaped-parameters (parameters)
-    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
-      (when (=  1 (length result))
-        (first result)))))
+    (let* ((query (sqlite:prepare-statement db sql))
+           (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
+      (loop for (pn pv) on parameters by #'cddr
+            do (sqlite:bind-parameter query pn pv))
+      (when (sqlite:step-statement query)
+        (loop for field in fields
+              for i from 0
+              nconc (list field (sqlite:statement-column-value query i)))))))
 
 
 (defmethod select ((db sqlite-handle) sql &optional parameters)
   (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-to-list/named db sql parameters)))
+    (let* ((query (sqlite:prepare-statement db sql))
+           (fields (mapcar #'make-keyword (sqlite:statement-column-names query))))
+      (loop for (pn pv) on parameters by #'cddr
+            do (sqlite:bind-parameter query pn pv))
+      (loop for row = (sqlite:step-statement query)
+            while row
+            collect (loop for field in fields
+                          for i from 0
+                          nconc (list field (sqlite:statement-column-value query i)))))))

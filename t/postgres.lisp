@@ -53,11 +53,10 @@
     :row)
 
 (deftest test-insert-returning ()
-  (let* ((id (first
-              (insert-user-returning *test-db*
-                                     :username "lol"
-                                     :firstname "Bob"
-                                     :lastname "Bobbins")))
+  (let* ((id (insert-user-returning *test-db*
+                                    :username "lol"
+                                    :firstname "Bob"
+                                    :lastname "Bobbins"))
          (user (with-postmodern-connection (*test-db*)
                  (user-for-id id))))
     (is (string= "Bobbins" (first user)))))
@@ -72,7 +71,7 @@
 
 
 (deftest test-update-user ()
-  (let ((id (first (insert-user-returning *test-db* :username "cool" :lastname "McCool"))))
+  (let ((id (insert-user-returning *test-db* :username "cool" :lastname "McCool")))
     (update-name *test-db* :id id :lastname "SuperCool")
     (is (string= (first (with-postmodern-connection (*test-db*)
                           (user-for-id id)))
