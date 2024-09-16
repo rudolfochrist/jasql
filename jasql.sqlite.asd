@@ -18,13 +18,14 @@
      (uiop:subpathname *load-pathname* "README.txt"))
   :in-order-to ((test-op (load-op "jasql.sqlite/test")))
   :perform (test-op (op c)
-                    (uiop:symbol-call
-                     :jasql.sqlite.test
-                     :run)))
+                    (when (uiop:symbol-call :5am :run! :jasql.sqlite.test)
+                      #-(or swank slynk)
+                      (error "Tests failed."))))
 
 (defsystem "jasql.sqlite/test"
   :depends-on ("uiop"
-               "fiasco"
+               "fiveam"
+               "fiveam-matchers"
                "jasql.sqlite")
   :pathname "t/"
   :components ((:file "sqlite")
