@@ -3,7 +3,7 @@
 create table users
 (
   _id integer primary key autoincrement,
-  username test not null,
+  username text not NULL unique,
   firstname text,
   lastname text
 )

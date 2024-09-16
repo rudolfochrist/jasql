@@ -92,3 +92,12 @@
      (list :username "src" :firstname "Sebastian" :lastname "Christ"))
     (assert-that (length (get-all-by-lastname *test-db* :lastname "Miller"))
                  (equal-to 2))))
+
+(test test-transactions
+  (with-test-db ()
+    (ignore-errors
+     (sqlite:with-open-database (db (path *test-db*))
+       (sqlite:with-transaction db
+         (insert-user db :username "foo")
+         (insert-user db :username "foo"))))
+    (assert-that (count-users) (equal-to 0))))
