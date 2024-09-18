@@ -71,7 +71,7 @@
                 :use-binary ,use-binary)))
 
 
-(defmacro with-postmodern-connection ((db) &body body)
+(defmacro with-postmodern-connection (db &body body)
   `(unless (and pomo:*database*
                 (pomo:connected-p pomo:*database*))
      (postmodern:call-with-connection (spec ,db) (lambda () ,@body))))
@@ -136,40 +136,40 @@
 ;;; protocol implementation
 
 (defmethod insert-returning ((db postgres-handle) sql &optional parameters)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (with-prepared-statement (func params)
         (sql parameters :single)
       (apply func params))))
 
 
 (defmethod insert-update-delete ((db postgres-handle) sql &optional parameters)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (with-prepared-statement (func params)
         (sql parameters :none)
       (apply func params))))
 
 
 (defmethod insert-update-delete-many ((db postgres-handle) sql &optional parameters-list)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (loop for parameters in parameters-list
           do (with-prepared-statement (func params)
                  (sql parameters :none)
                (apply func params)))))
 
 (defmethod execute-script ((db postgres-handle) sql)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (query sql)))
 
 
 (defmethod select-one-row ((db postgres-handle) sql &optional parameters)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (with-prepared-statement (func params)
         (sql parameters :plist)
       (apply func params))))
 
 
 (defmethod select ((db postgres-handle) sql &optional parameters)
-  (with-postmodern-connection (db)
+  (with-postmodern-connection db
     (with-prepared-statement (func params)
         (sql parameters :plists)
       (apply func params))))

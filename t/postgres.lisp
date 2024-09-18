@@ -97,7 +97,7 @@
 
 (test test-transactions
   (with-test-db ()
-    (with-postmodern-connection (*test-db*)
+    (with-postmodern-connection *test-db*
       (pomo:with-transaction ()
         (insert-user *test-db* :username "foo")
         (insert-user *test-db* :username "foo")))
