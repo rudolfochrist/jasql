@@ -18,7 +18,7 @@
      (uiop:subpathname *load-pathname* "README.txt"))
   :in-order-to ((test-op (load-op "jasql.sqlite/test")))
   :perform (test-op (op c)
-                    (when (uiop:symbol-call :5am :run! :jasql.sqlite.test)
+                    (unless (uiop:symbol-call :5am :run! :jasql.sqlite.test)
                       #-(or swank slynk)
                       (error "Tests failed."))))
 

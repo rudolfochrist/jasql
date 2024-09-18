@@ -28,7 +28,7 @@
   :components ((:file "postgres")
                (:static-file "postrges-test.sql"))
   :perform (test-op (op c)
-                    (when (uiop:symbol-call :fiveam :run! :jasql.postgres.test)
+                    (unless (uiop:symbol-call :fiveam :run! :jasql.postgres.test)
                       #-(or slynk swank)
                       (error "Tests faild."))))
 
