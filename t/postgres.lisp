@@ -94,3 +94,11 @@
      (list :username "src" :firstname "Sebastian" :lastname "Christ"))
     (assert-that (length (get-all-by-lastname *test-db* :lastname "Miller"))
                  (equal-to 2))))
+
+(test test-transactions
+  (with-test-db ()
+    (with-postmodern-connection (*test-db*)
+      (pomo:with-transaction ()
+        (insert-user *test-db* :username "foo")
+        (insert-user *test-db* :username "foo")))
+    (assert-that (count-users) (equal-to 0))))

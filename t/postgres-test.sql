@@ -3,7 +3,7 @@
 create table users
 (
   _id serial primary key,
-  username text not null,
+  username text not NULL unique,
   firstname text,
   lastname text
 )

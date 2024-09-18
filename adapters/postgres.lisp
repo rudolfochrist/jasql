@@ -72,7 +72,9 @@
 
 
 (defmacro with-postmodern-connection ((db) &body body)
-  `(postmodern:call-with-connection (spec ,db) (lambda () ,@body)))
+  `(unless (and pomo:*database*
+                (pomo:connected-p pomo:*database*))
+     (postmodern:call-with-connection (spec ,db) (lambda () ,@body))))
 
 
 (defvar *terminals* (list #\Space #\Tab #\Newline #\, #\; #\( #\)))
