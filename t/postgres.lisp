@@ -16,7 +16,7 @@
 
 
 (defun count-users (&optional db)
-  (with-postmodern-connection ((or db *test-db*))
+  (with-postmodern-connection (or db *test-db*)
     (pomo:query "select count (*) from users;" :single)))
 
 ;;; fixtures
@@ -25,7 +25,7 @@
   `(progn
      (create-users-table *test-db*)
      (unwind-protect (progn ,@body)
-       (with-postmodern-connection (*test-db*)
+       (with-postmodern-connection *test-db*
          (pomo:drop-table 'users :if-exists t :cascade t)))))
 
 ;;; tests
@@ -53,7 +53,7 @@
                                       :username "lol"
                                       :firstname "Bob"
                                       :lastname "Bobbins"))
-           (user (with-postmodern-connection (*test-db*)
+           (user (with-postmodern-connection *test-db*
                    (user-for-id id))))
       (assert-that (first user) (equal-to "Bobbins")))))
 
@@ -63,17 +63,15 @@
     (let  ((count (count-users))
            (id (insert-user-returning *test-db* :username "frank")))
       (assert-that (count-users) (equal-to (incf count)))
-      (delete-user *test-db* :id 1)
+      (delete-user *test-db* :id id)
       (assert-that (count-users) (equal-to (decf count))))))
 
 
 (test test-update-user
   (with-test-db ()
-    (let* ((id (insert-user-returning *test-db* :username "cool" :lastname "McCool"))
-           (user
-             ))
+    (let* ((id (insert-user-returning *test-db* :username "cool" :lastname "McCool")))
       (update-name *test-db* :id id :lastname "SuperCool")
-      (assert-that (first (with-postmodern-connection (*test-db*)
+      (assert-that (first (with-postmodern-connection *test-db*
                             (user-for-id id)))
                    (equal-to "SuperCool")))))
 
