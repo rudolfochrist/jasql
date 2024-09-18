@@ -21,7 +21,8 @@
 
 (defsystem "jasql.postgres/test"
   :depends-on ("uiop"
-               "fiasco"
+               "fiveam"
+               "fiveam-matchers"
                "jasql.postgres")
   :pathname "t/"
   :components ((:file "postgres")
