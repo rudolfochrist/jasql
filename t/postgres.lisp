@@ -1,87 +1,96 @@
 ;;;; postgres.lisp
 
-(fiasco:define-test-package #:jasql.postgres.test
-  (:use :jasql.postgres))
+(defpackage #:jasql.postgres.test
+  (:use :cl :fiveam :fiveam-matchers :jasql :jasql.postgres))
 
 (in-package #:jasql.postgres.test)
 
-(defvar *test-db* nil)
+(in-suite* :jasql.postgres.test)
 
-(defun setup ()
-  (setf *test-db* (make-instance 'postgres-handle
-                                 :database "jasqltest"
-                                 :username "jasql"
-                                 :password nil
-                                 :host :unix)))
-
-
-(defun teardown ()
-  (with-postmodern-connection (*test-db*)
-    (pomo:query "drop table users;")))
+(defvar *test-db*
+  (make-instance 'postgres-handle
+                 :database "jasqltest"
+                 :username "jasql"
+                 :password nil
+                 :host :unix))
 
 
-(defun run (&key interactive)
-  (setup)
-  (unwind-protect
-       (run-package-tests :package :jasql.postgres.test :interactive interactive)
-    (teardown)))
-
-
-(defun count-users (db)
-  (with-postmodern-connection (db)
+(defun count-users (&optional db)
+  (with-postmodern-connection ((or db *test-db*))
     (pomo:query "select count (*) from users;" :single)))
+
+;;; fixtures
+
+(defmacro with-test-db (() &body body)
+  `(progn
+     (create-users-table *test-db*)
+     (unwind-protect (progn ,@body)
+       (with-postmodern-connection (*test-db*)
+         (pomo:drop-table 'users :if-exists t :cascade t)))))
 
 ;;; tests
 
 (jasql:load-sql "t/postgres-test.sql" :system "jasql.postgres")
 
-(deftest test-creat-db ()
-  (finishes (create-users-table *test-db*)))
 
-
-(deftest test-insert-many ()
-  (bulk-insert-users
-   *test-db*
-   (list :username "foo" :firstname "Deborah" :lastname "Miller")
-   (list :username "pfm" :firstname "Percy" :lastname "Miller")
-   (list :username "src" :firstname "Sebastian" :lastname "Christ"))
-  (is (= (count-users *test-db*) 3)))
+(test test-insert-many
+  (with-test-db ()
+    (bulk-insert-users
+     *test-db*
+     (list :username "foo" :firstname "Deborah" :lastname "Miller")
+     (list :username "pfm" :firstname "Percy" :lastname "Miller")
+     (list :username "src" :firstname "Sebastian" :lastname "Christ"))
+    (assert-that (count-users) (equal-to 3))))
 
 
 (pomo:defprepared user-for-id
     "select lastname from users where _id = $1"
     :row)
 
-(deftest test-insert-returning ()
-  (let* ((id (insert-user-returning *test-db*
-                                    :username "lol"
-                                    :firstname "Bob"
-                                    :lastname "Bobbins"))
-         (user (with-postmodern-connection (*test-db*)
-                 (user-for-id id))))
-    (is (string= "Bobbins" (first user)))))
+(test test-insert-returning
+  (with-test-db ()
+    (let* ((id (insert-user-returning *test-db*
+                                      :username "lol"
+                                      :firstname "Bob"
+                                      :lastname "Bobbins"))
+           (user (with-postmodern-connection (*test-db*)
+                   (user-for-id id))))
+      (assert-that (first user) (equal-to "Bobbins")))))
 
 
-(deftest test-insert-delete ()
-  (let  ((count (count-users *test-db*)))
-    (insert-user *test-db* :username "frank")
-    (is (= (count-users *test-db*) (incf count)))
-    (delete-user *test-db* :id 3)
-    (is (= (count-users *test-db*) (decf count)))))
+(test test-insert-delete
+  (with-test-db ()
+    (let  ((count (count-users))
+           (id (insert-user-returning *test-db* :username "frank")))
+      (assert-that (count-users) (equal-to (incf count)))
+      (delete-user *test-db* :id 1)
+      (assert-that (count-users) (equal-to (decf count))))))
 
 
-(deftest test-update-user ()
-  (let ((id (insert-user-returning *test-db* :username "cool" :lastname "McCool")))
-    (update-name *test-db* :id id :lastname "SuperCool")
-    (is (string= (first (with-postmodern-connection (*test-db*)
-                          (user-for-id id)))
-                 "SuperCool"))))
+(test test-update-user
+  (with-test-db ()
+    (let* ((id (insert-user-returning *test-db* :username "cool" :lastname "McCool"))
+           (user
+             ))
+      (update-name *test-db* :id id :lastname "SuperCool")
+      (assert-that (first (with-postmodern-connection (*test-db*)
+                            (user-for-id id)))
+                   (equal-to "SuperCool")))))
 
 
-(deftest test-get-single-user ()
-  (is (not (consp (first (get-single-user *test-db* :id 1))))))
+(test test-get-single-user
+  (with-test-db ()
+    (insert-user *test-db* :username "foo")
+    (assert-that (type-of (first (get-single-user *test-db* :id 1)))
+                 (is-not (equal-to 'cons)))))
 
 
-(deftest test-get-all-by-last-name ()
-  (is (= 2
-         (length (get-all-by-lastname *test-db* :lastname "Miller")))))
+(test test-get-all-by-last-name
+  (with-test-db ()
+    (bulk-insert-users
+     *test-db*
+     (list :username "foo" :firstname "Deborah" :lastname "Miller")
+     (list :username "pfm" :firstname "Percy" :lastname "Miller")
+     (list :username "src" :firstname "Sebastian" :lastname "Christ"))
+    (assert-that (length (get-all-by-lastname *test-db* :lastname "Miller"))
+                 (equal-to 2))))
