@@ -1,9 +1,0 @@
-@findex load-sql
-@anchor{Macro load-sql}
-@deffn {Macro} {load-sql} path @&key system
-Load @code{sql} and generate @code{db} access functions.
-
-@code{path} is either a @code{sql} file or a directory that contains @code{sql} files. If
-@code{path} is relative, it is assumed to be relative to @code{system}.
-@end deffn
-

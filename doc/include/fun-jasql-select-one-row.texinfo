@@ -1,6 +1,0 @@
-@findex select-one-row
-@anchor{Generic-Function select-one-row}
-@deffn {Generic Function} {select-one-row} db sql @&optional parameters
-Run @code{select} and return a single row.
-@end deffn
-
