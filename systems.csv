@@ -53,3 +53,4 @@ str.test, ghcr.io/ocicl/str@sha256:3771c466d33a923d4fd1b1aa71f7a60d0029405e7fb3b
 str, ghcr.io/ocicl/str@sha256:3771c466d33a923d4fd1b1aa71f7a60d0029405e7fb3bafae1a3f19b7ac9b121, cl-str-20240708-1bcf26d/str.asd
 cl-unicode, ghcr.io/ocicl/cl-unicode@sha256:d98f12c1271fb3c1812a27d64dfbe95b0bc5bcfd545b71b8101874e61270b120, cl-unicode-20240503-07e7ff5/cl-unicode.asd
 cl-change-case, ghcr.io/ocicl/cl-change-case@sha256:63b6a033f762d6dc5d365ce49f2a2c691677f2ec1375ebe4226d13b19a29dc7c, cl-change-case-0.2.1/cl-change-case.asd
+sb-texinfo, ghcr.io/lispmirror/sb-texinfo@sha256:f4185003ac395d4b12d610b31c44a6d083f396af2560b911e0958defb4a5ccca, sb-texinfo-20231104-0.1.2/sb-texinfo.asd

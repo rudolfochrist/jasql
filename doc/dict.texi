@@ -9,3 +9,6 @@
 @include include/fun-jasql-select.texinfo
 @include include/fun-jasql-select-one-row.texinfo
 @include include/fun-jasql-sql.texinfo
+@include include/class-jasql.sqlite-sqlite-handle.texinfo
+@include include/class-jasql.postgres-postgres-handle.texinfo
+@include include/macro-jasql.postgres-with-postmodern-connection.texinfo

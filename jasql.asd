@@ -18,4 +18,4 @@
   :description "Simple SQL in Common Lisp. A direct port of Python's anosql."
   :long-description
   #.(uiop:read-file-string
-     (uiop:subpathname *load-pathname* "README.txt")))
+     (uiop:subpathname *load-pathname* "README.org")))

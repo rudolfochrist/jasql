@@ -15,7 +15,7 @@
   :description "PostgreSQL adadpter for jasql."
   :long-description
   #.(uiop:read-file-string
-     (uiop:subpathname *load-pathname* "README.txt"))
+     (uiop:subpathname *load-pathname* "README.org"))
   :in-order-to ((test-op (test-op jasql.postgres/test))))
 
 

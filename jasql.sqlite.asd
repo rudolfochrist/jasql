@@ -15,7 +15,7 @@
   :description "Use jasql with SQLite."
   :long-description
   #.(uiop:read-file-string
-     (uiop:subpathname *load-pathname* "README.txt"))
+     (uiop:subpathname *load-pathname* "README.org"))
   :in-order-to ((test-op (load-op "jasql.sqlite/test")))
   :perform (test-op (op c)
                     (unless (uiop:symbol-call :5am :run! :jasql.sqlite.test)

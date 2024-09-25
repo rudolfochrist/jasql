@@ -6,7 +6,6 @@
                 #:with-transaction
                 #:with-open-database)
   (:export
-   #:*default-busy-timeout*
    #:sqlite-handle
    #:path
    #:busy-timeout))
@@ -15,10 +14,13 @@
 
 (defclass sqlite-handle ()
   ((path :initarg :path
-         :accessor path)
+         :accessor path
+         :documentation "Path to the SQLite database.")
    (busy-timeout :initarg :busy-timeout
                  :initform 5000
-                 :accessor busy-timeout)))
+                 :accessor busy-timeout
+                 :documentation "Busy timeout for this connection."))
+  (:documentation "Wraps a database connection to a SQLite database."))
 
 
 (defun escape-parameters (params)

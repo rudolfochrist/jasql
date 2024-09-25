@@ -2,10 +2,14 @@
 #+MACRO: version (eval (with-temp-buffer (insert-file-contents-literally "../version" nil) (buffer-substring-no-properties (point-min) (point-max))))
 #+STARTUP: content
 
-#+TITLE: jasql Manuel {{{version}}}
+#+TITLE: jasql Manual {{{version}}}
 #+AUTHOR: Sebastian Christ
 #+EMAIL: rudolfo.christ@pm.me
 #+OPTIONS: ':t author:t email:t toc:t
+
+#+TEXINFO_HEADER: @c -------------------------------------------
+#+TEXINFO_HEADER: @c MACHINE GENERATED FILE! DON'T EDIT BY HAND.
+#+TEXINFO_HEADER: @c -------------------------------------------
 
 #+TEXINFO_DIR_CATEGORY: Software Development
 #+TEXINFO_DIR_TITLE: jasql (jasql)
@@ -180,71 +184,6 @@ CREATE TABLE articles
 #+cindex: ?
 
 Sometimes a query produces a single result. Every query with a ~?~ suffix returns a single row. 
-
-* Implementing an Database Adapter
-#+cindex: implementing an database adapter
-#+cindex: adapter protocol
-
-Implementing a new adapter means specializing the adapter protocol to your adapter type. Following is an
-implementation for SQLite:
-
-#+begin_src lisp
-(defun escape-parameters (params)
-  (labels ((recu (params result)
-             (cond
-               ((null params)
-                (reverse result))
-               ((keywordp (first params))
-                (recu (rest params)
-                      (cons (format nil ":~A" (string-downcase (string (first params)))) result)))
-               ((consp (first params))
-                (recu (rest params)
-                      (cons (recu (first params) '()) result)))
-               (t
-                (recu (rest params) (cons (first params) result))))))
-    (recu params '())))
-
-
-(defmacro with-escaped-parameters ((parameters) &body body)
-  (let ((gparams (gensym "params")))
-    `(let* ((,gparams (escape-parameters ,parameters))
-            (,(intern (symbol-name parameters)) ,gparams))
-       ,@body)))
-
-
-(defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters))
-  (sqlite:last-insert-rowid db))
-
-
-(defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters)))
-
-
-(defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
-  (with-escaped-parameters (parameters-list)
-    (sqlite:with-transaction db
-      (loop for parameters in parameters-list
-            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
-
-
-(defmethod execute-script ((db sqlite-handle) sql)
-  (sqlite:execute-non-query db sql))
-
-
-(defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
-      (when (=  1 (length result))
-        (first result)))))
-
-
-(defmethod select ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-to-list/named db sql parameters)))
-#+end_src
 
 * Directory
 
@@ -711,7 +650,17 @@ to permit their use in free software.
 :INDEX: cp
 :END:
 
-* Functions and Macro Index
+* Variable Index
+:PROPERTIES:
+:INDEX:    vr
+:END:
+
+* Function and Macro Index
 :PROPERTIES:
 :INDEX: fn
+:END:
+
+* Type Index
+:PROPERTIES:
+:INDEX:    tp
 :END:

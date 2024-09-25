@@ -1,16 +1,10 @@
 # -*- mode: org; -*-
 #+MACRO: version (eval (with-temp-buffer (insert-file-contents-literally "../version" nil) (buffer-substring-no-properties (point-min) (point-max))))
 #+STARTUP: showall
-#+EXPORT_FILE_NAME: ../README.txt
 #+OPTIONS: toc:nil author:nil
-# This is just the template README. Export to txt to get the real README.
 * NAME
 
 jasql --- Simple SQL in Common Lisp. A direct port of Python's anosql.
-
-* VERSION
-
-{{{version}}}
 
 * SYNOPSIS
 

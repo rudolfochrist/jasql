@@ -1,15 +1,18 @@
 \input texinfo    @c -*- texinfo -*-
 @c %**start of header
 @setfilename jasql.info
-@settitle jasql Manuel 0.8
+@settitle jasql Manual 0.9.0
 @documentencoding UTF-8
 @documentlanguage en
+@c -------------------------------------------
+@c MACHINE GENERATED FILE! DON'T EDIT BY HAND.
+@c -------------------------------------------
 @c %**end of header
 
 @copying
-This manual is for jasql (version 0.8
+This manual is for jasql (version 0.9.0
 ,
-last updated ``05 November 2023'')
+last updated ``25 September 2024'')
 
 Copyright @copyright{} 2020 Free Software Foundation, Inc.
 
@@ -31,7 +34,7 @@ Free Documentation License''.
 
 @finalout
 @titlepage
-@title jasql Manuel 0.8
+@title jasql Manual 0.9.0
 @author Sebastian Christ (@email{rudolfo.christ@@pm.me})
 @page
 @vskip 0pt plus 1filll
@@ -42,7 +45,7 @@ Free Documentation License''.
 
 @ifnottex
 @node Top
-@top jasql Manuel 0.8
+@top jasql Manual 0.9.0
 
 @insertcopying
 @end ifnottex
@@ -51,11 +54,12 @@ Free Documentation License''.
 * Defining Queries::
 * Loading Queries::
 * Query Name Semantics::
-* Implementing an Database Adapter::
 * Directory::
 * GNU Free Documentation License::
 * Concept Index::
-* Functions and Macro Index::
+* Variable Index::
+* Function and Macro Index::
+* Type Index::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -242,73 +246,6 @@ CREATE TABLE articles
 @cindex ?
 
 Sometimes a query produces a single result. Every query with a @code{?} suffix returns a single row.
-
-@node Implementing an Database Adapter
-@chapter Implementing an Database Adapter
-
-@cindex implementing an database adapter
-@cindex adapter protocol
-
-Implementing a new adapter means specializing the adapter protocol to your adapter type. Following is an
-implementation for SQLite:
-
-@lisp
-(defun escape-parameters (params)
-  (labels ((recu (params result)
-             (cond
-               ((null params)
-                (reverse result))
-               ((keywordp (first params))
-                (recu (rest params)
-                      (cons (format nil ":~A" (string-downcase (string (first params)))) result)))
-               ((consp (first params))
-                (recu (rest params)
-                      (cons (recu (first params) '()) result)))
-               (t
-                (recu (rest params) (cons (first params) result))))))
-    (recu params '())))
-
-
-(defmacro with-escaped-parameters ((parameters) &body body)
-  (let ((gparams (gensym "params")))
-    `(let* ((,gparams (escape-parameters ,parameters))
-            (,(intern (symbol-name parameters)) ,gparams))
-       ,@@body)))
-
-
-(defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters))
-  (sqlite:last-insert-rowid db))
-
-
-(defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-non-query/named db sql parameters)))
-
-
-(defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
-  (with-escaped-parameters (parameters-list)
-    (sqlite:with-transaction db
-      (loop for parameters in parameters-list
-            do (apply #'sqlite:execute-non-query/named db sql parameters)))))
-
-
-(defmethod execute-script ((db sqlite-handle) sql)
-  (sqlite:execute-non-query db sql))
-
-
-(defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
-      (when (=  1 (length result))
-        (first result)))))
-
-
-(defmethod select ((db sqlite-handle) sql &optional parameters)
-  (with-escaped-parameters (parameters)
-    (apply #'sqlite:execute-to-list/named db sql parameters)))
-@end lisp
 
 @node Directory
 @chapter Directory
@@ -810,9 +747,19 @@ to permit their use in free software.
 
 @printindex cp
 
-@node Functions and Macro Index
-@chapter Functions and Macro Index
+@node Variable Index
+@chapter Variable Index
+
+@printindex vr
+
+@node Function and Macro Index
+@chapter Function and Macro Index
 
 @printindex fn
+
+@node Type Index
+@chapter Type Index
+
+@printindex tp
 
 @bye

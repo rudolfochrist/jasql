@@ -1,5 +1,5 @@
 *.fasl
 /.DS_Store
-/doc/include/*.texinfo
 /systems/
 /t/test.sqlite3
+doc/include/

@@ -1,6 +1,7 @@
 This is jasql.info, produced by makeinfo version 7.1 from jasql.texi.
 
-This manual is for jasql (version 0.8 , last updated "05 November 2023")
+This manual is for jasql (version 0.9.0 , last updated "25 September
+2024")
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -19,10 +20,11 @@ END-INFO-DIR-ENTRY
 
 File: jasql.info,  Node: Top,  Next: Defining Queries,  Up: (dir)
 
-jasql Manuel 0.8
-****************
+jasql Manual 0.9.0
+******************
 
-This manual is for jasql (version 0.8 , last updated "05 November 2023")
+This manual is for jasql (version 0.9.0 , last updated "25 September
+2024")
 
    Copyright © 2020 Free Software Foundation, Inc.
 
@@ -38,11 +40,12 @@ This manual is for jasql (version 0.8 , last updated "05 November 2023")
 * Defining Queries::
 * Loading Queries::
 * Query Name Semantics::
-* Implementing an Database Adapter::
 * Directory::
 * GNU Free Documentation License::
 * Concept Index::
-* Functions and Macro Index::
+* Variable Index::
+* Function and Macro Index::
+* Type Index::
 
 -- The Detailed Node Listing --
 
@@ -88,7 +91,7 @@ use *note load-sql: Macro load-sql.
      (jasql:load-sql "path/to/sql" :system "blog")
 
 
-File: jasql.info,  Node: Query Name Semantics,  Next: Implementing an Database Adapter,  Prev: Loading Queries,  Up: Top
+File: jasql.info,  Node: Query Name Semantics,  Next: Directory,  Prev: Loading Queries,  Up: Top
 
 3 Query Name Semantics
 **********************
@@ -215,74 +218,9 @@ Sometimes a query produces a single result.  Every query with a ‘?’
 suffix returns a single row.
 
 
-File: jasql.info,  Node: Implementing an Database Adapter,  Next: Directory,  Prev: Query Name Semantics,  Up: Top
+File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev: Query Name Semantics,  Up: Top
 
-4 Implementing an Database Adapter
-**********************************
-
-Implementing a new adapter means specializing the adapter protocol to
-your adapter type.  Following is an implementation for SQLite:
-
-     (defun escape-parameters (params)
-       (labels ((recu (params result)
-                  (cond
-                    ((null params)
-                     (reverse result))
-                    ((keywordp (first params))
-                     (recu (rest params)
-                           (cons (format nil ":~A" (string-downcase (string (first params)))) result)))
-                    ((consp (first params))
-                     (recu (rest params)
-                           (cons (recu (first params) '()) result)))
-                    (t
-                     (recu (rest params) (cons (first params) result))))))
-         (recu params '())))
-
-
-     (defmacro with-escaped-parameters ((parameters) &body body)
-       (let ((gparams (gensym "params")))
-         `(let* ((,gparams (escape-parameters ,parameters))
-                 (,(intern (symbol-name parameters)) ,gparams))
-            ,@body)))
-
-
-     (defmethod insert-returning ((db sqlite-handle) sql &optional parameters)
-       (with-escaped-parameters (parameters)
-         (apply #'sqlite:execute-non-query/named db sql parameters))
-       (sqlite:last-insert-rowid db))
-
-
-     (defmethod insert-update-delete ((db sqlite-handle) sql &optional parameters)
-       (with-escaped-parameters (parameters)
-         (apply #'sqlite:execute-non-query/named db sql parameters)))
-
-
-     (defmethod insert-update-delete-many ((db sqlite-handle) sql &optional parameters-list)
-       (with-escaped-parameters (parameters-list)
-         (sqlite:with-transaction db
-           (loop for parameters in parameters-list
-                 do (apply #'sqlite:execute-non-query/named db sql parameters)))))
-
-
-     (defmethod execute-script ((db sqlite-handle) sql)
-       (sqlite:execute-non-query db sql))
-
-
-     (defmethod select-one-row ((db sqlite-handle) sql &optional parameters)
-       (with-escaped-parameters (parameters)
-         (let ((result (apply #'sqlite:execute-to-list/named db sql parameters)))
-           (when (=  1 (length result))
-             (first result)))))
-
-
-     (defmethod select ((db sqlite-handle) sql &optional parameters)
-       (with-escaped-parameters (parameters)
-         (apply #'sqlite:execute-to-list/named db sql parameters)))
-
-
-File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev: Implementing an Database Adapter,  Up: Top
-
-5 Directory
+4 Directory
 ***********
 
  -- Generic Function: execute-script db sql
@@ -325,6 +263,84 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 
  -- Function: sql symbol
      Return ‘sql’ used by ‘symbol’.
+
+ -- Class: sqlite-handle
+     Class precedence list: ‘sqlite-handle, standard-object, t’
+
+     Slots:
+        • ‘path’ -- initarg: ‘:path’; reader: ‘jasql.sqlite:path’;
+          writer: ‘(setf jasql.sqlite:path)’
+
+          Path to the SQLite database.
+        • ‘busy-timeout’ -- initarg: ‘:busy-timeout’; reader:
+          ‘jasql.sqlite:busy-timeout’; writer:
+          ‘(setf jasql.sqlite:busy-timeout)’
+
+          Busy timeout for this connection.
+
+     Wraps a database connection to a SQLite database.
+
+ -- Class: postgres-handle
+     Class precedence list: ‘postgres-handle, standard-object, t’
+
+     Slots:
+        • ‘database’ -- initarg: ‘:database’; reader:
+          ‘jasql.postgres::psql-database’; writer:
+          ‘(setf jasql.postgres::psql-database)’
+
+          The database name.
+        • ‘username’ -- initarg: ‘:username’; reader:
+          ‘jasql.postgres::psql-username’; writer:
+          ‘(setf jasql.postgres::psql-username)’
+
+          Username to use for this database connection.
+        • ‘password’ -- initarg: ‘:password’; reader:
+          ‘jasql.postgres::psql-password’; writer:
+          ‘(setf jasql.postgres::psql-password)’
+
+          Password to use for this database connection.
+        • ‘host’ -- initarg: ‘:host’; reader:
+          ‘jasql.postgres::psql-host’; writer:
+          ‘(setf jasql.postgres::psql-host)’
+
+          The database host.  Use ':unix' to use unix domain sockets.
+          See postmodern documentation for more information
+        • ‘port’ -- initarg: ‘:port’; reader:
+          ‘jasql.postgres::psql-port’; writer:
+          ‘(setf jasql.postgres::psql-port)’
+
+          Post to use for this database connection.
+        • ‘pooled-p’ -- initarg: ‘:pooled-p’; reader:
+          ‘jasql.postgres::psql-pooled-p’; writer:
+          ‘(setf jasql.postgres::psql-pooled-p)’
+
+          Use pooled connection.  See postmodern documentation for more
+          information.
+        • ‘use-ssl’ -- initarg: ‘:use-ssl’; reader:
+          ‘jasql.postgres::psql-use-ssl’; writer:
+          ‘(setf jasql.postgres::psql-use-ssl)’
+
+          Use ‘ssl’.
+        • ‘service’ -- initarg: ‘:service’; reader:
+          ‘jasql.postgres::psql-service’; writer:
+          ‘(setf jasql.postgres::psql-service)’
+
+          Service name.
+        • ‘application-name’ -- initarg: ‘:application-name’; reader:
+          ‘jasql.postgres::psql-application-name’; writer:
+          ‘(setf jasql.postgres::psql-application-name)’
+
+          Application name
+        • ‘use-binary’ -- initarg: ‘:use-binary’; reader:
+          ‘jasql.postgres::psql-use-binary’; writer:
+          ‘(setf jasql.postgres::psql-use-binary)’
+
+          User binary protocol for communication.
+
+     Wraps a connection to a PostgreSQL database.
+
+ -- Macro: with-postmodern-connection db &body body
+     Establish a connection to the database ‘db’.
 
 
 File: jasql.info,  Node: GNU Free Documentation License,  Next: Concept Index,  Prev: Directory,  Up: Top
@@ -760,7 +776,7 @@ software license, such as the GNU General Public License, to permit
 their use in free software.
 
 
-File: jasql.info,  Node: Concept Index,  Next: Functions and Macro Index,  Prev: GNU Free Documentation License,  Up: Top
+File: jasql.info,  Node: Concept Index,  Next: Variable Index,  Prev: GNU Free Documentation License,  Up: Top
 
 B Concept Index
 ***************
@@ -778,14 +794,10 @@ B Concept Index
 * #:                                     Execute script with #. (line 6)
 * <!:                                    Insert returning with <!.
                                                                 (line 6)
-* adapter protocol:                      Implementing an Database Adapter.
-                                                                (line 6)
 * bulk operation:                        Bulk operations with *!.
                                                                 (line 6)
 * Defining Queries:                      Defining Queries.      (line 6)
 * execute script:                        Execute script with #. (line 6)
-* implementing an database adapter:      Implementing an Database Adapter.
-                                                                (line 6)
 * insert returning:                      Insert returning with <!.
                                                                 (line 6)
 * insert update delete many:             Insert/Update/Delete with !.
@@ -799,62 +811,88 @@ B Concept Index
 * SQL:                                   Defining Queries.      (line 6)
 
 
-File: jasql.info,  Node: Functions and Macro Index,  Prev: Concept Index,  Up: Top
+File: jasql.info,  Node: Variable Index,  Next: Function and Macro Index,  Prev: Concept Index,  Up: Top
 
-C Functions and Macro Index
-***************************
+C Variable Index
+****************
+
+
+File: jasql.info,  Node: Function and Macro Index,  Next: Type Index,  Prev: Variable Index,  Up: Top
+
+D Function and Macro Index
+**************************
 
  [index ]
 * Menu:
 
-* docstring:                             Directory.            (line 26)
-* docstring <1>:                         Directory.            (line 26)
-* execute-script:                        Directory.            (line  6)
-* execute-script <1>:                    Directory.            (line  6)
-* insert-returning:                      Directory.            (line 29)
-* insert-returning <1>:                  Directory.            (line 29)
-* insert-update-delete:                  Directory.            (line  9)
-* insert-update-delete <1>:              Directory.            (line  9)
-* insert-update-delete-many:             Directory.            (line 12)
-* insert-update-delete-many <1>:         Directory.            (line 12)
-* load-sql:                              Directory.            (line 19)
-* load-sql <1>:                          Directory.            (line 19)
-* paramaters:                            Directory.            (line 35)
-* paramaters <1>:                        Directory.            (line 35)
-* select:                                Directory.            (line 38)
-* select <1>:                            Directory.            (line 38)
-* select-one-row:                        Directory.            (line 41)
-* select-one-row <1>:                    Directory.            (line 41)
-* sql:                                   Directory.            (line 44)
-* sql <1>:                               Directory.            (line 44)
+* docstring:                             Directory.           (line  26)
+* docstring <1>:                         Directory.           (line  26)
+* execute-script:                        Directory.           (line   6)
+* execute-script <1>:                    Directory.           (line   6)
+* insert-returning:                      Directory.           (line  29)
+* insert-returning <1>:                  Directory.           (line  29)
+* insert-update-delete:                  Directory.           (line   9)
+* insert-update-delete <1>:              Directory.           (line   9)
+* insert-update-delete-many:             Directory.           (line  12)
+* insert-update-delete-many <1>:         Directory.           (line  12)
+* load-sql:                              Directory.           (line  19)
+* load-sql <1>:                          Directory.           (line  19)
+* paramaters:                            Directory.           (line  35)
+* paramaters <1>:                        Directory.           (line  35)
+* select:                                Directory.           (line  38)
+* select <1>:                            Directory.           (line  38)
+* select-one-row:                        Directory.           (line  41)
+* select-one-row <1>:                    Directory.           (line  41)
+* sql:                                   Directory.           (line  44)
+* sql <1>:                               Directory.           (line  44)
+* with-postmodern-connection:            Directory.           (line 122)
+* with-postmodern-connection <1>:        Directory.           (line 122)
+
+
+File: jasql.info,  Node: Type Index,  Prev: Function and Macro Index,  Up: Top
+
+E Type Index
+************
+
+ [index ]
+* Menu:
+
+* postgres-handle:                       Directory.            (line 63)
+* postgres-handle <1>:                   Directory.            (line 63)
+* sqlite-handle:                         Directory.            (line 47)
+* sqlite-handle <1>:                     Directory.            (line 47)
 
 
 
 Tag Table:
-Node: Top728
-Node: Defining Queries1763
-Node: Loading Queries2356
-Node: Query Name Semantics2662
-Node: Insert returning with <!3246
-Node: Insert/Update/Delete with !4122
-Node: Bulk operations with *!4797
-Node: Execute script with #5472
-Node: Select one with ?6036
-Node: Implementing an Database Adapter6294
-Node: Directory8832
-Ref: Generic-Function execute-script8985
-Ref: Generic-Function insert-update-delete9084
-Ref: Generic-Function insert-update-delete-many9206
-Ref: Macro load-sql9468
-Ref: Function docstring9740
-Ref: Generic-Function insert-returning9811
-Ref: Function paramaters10035
-Ref: Generic-Function select10120
-Ref: Generic-Function select-one-row10211
-Ref: Function sql10324
-Node: GNU Free Documentation License10394
-Node: Concept Index33579
-Node: Functions and Macro Index35841
+Node: Top731
+Node: Defining Queries1769
+Node: Loading Queries2362
+Node: Query Name Semantics2668
+Node: Insert returning with <!3229
+Node: Insert/Update/Delete with !4105
+Node: Bulk operations with *!4780
+Node: Execute script with #5455
+Node: Select one with ?6019
+Node: Directory6277
+Ref: Generic-Function execute-script6418
+Ref: Generic-Function insert-update-delete6517
+Ref: Generic-Function insert-update-delete-many6639
+Ref: Macro load-sql6901
+Ref: Function docstring7173
+Ref: Generic-Function insert-returning7244
+Ref: Function paramaters7468
+Ref: Generic-Function select7553
+Ref: Generic-Function select-one-row7644
+Ref: Function sql7757
+Ref: Class jasql.sqlite:sqlite-handle7827
+Ref: Class jasql.postgres:postgres-handle8377
+Ref: Macro jasql.postgres:with-postmodern-connection10813
+Node: GNU Free Documentation License10920
+Node: Concept Index34105
+Node: Variable Index36060
+Node: Function and Macro Index36203
+Node: Type Index37991
 
 End Tag Table
 
