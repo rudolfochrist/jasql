@@ -280,6 +280,9 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 
      Wraps a database connection to a SQLite database.
 
+ -- Function: make-handle &key path busy-timeout
+     Create a fresh database handle
+
  -- Class: postgres-handle
      Class precedence list: ‘postgres-handle, standard-object, t’
 
@@ -341,6 +344,10 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 
  -- Macro: with-postmodern-connection db &body body
      Establish a connection to the database ‘db’.
+
+ -- Function: make-handle &key database username password host port
+          pooled-p use-ssl service application-name use-binary
+     Create a fresh database handle
 
 
 File: jasql.info,  Node: GNU Free Documentation License,  Next: Concept Index,  Prev: Directory,  Up: Top
@@ -837,6 +844,10 @@ D Function and Macro Index
 * insert-update-delete-many <1>:         Directory.           (line  12)
 * load-sql:                              Directory.           (line  19)
 * load-sql <1>:                          Directory.           (line  19)
+* make-handle:                           Directory.           (line  63)
+* make-handle <1>:                       Directory.           (line  63)
+* make-handle <2>:                       Directory.           (line 128)
+* make-handle <3>:                       Directory.           (line 128)
 * paramaters:                            Directory.           (line  35)
 * paramaters <1>:                        Directory.           (line  35)
 * select:                                Directory.           (line  38)
@@ -845,8 +856,8 @@ D Function and Macro Index
 * select-one-row <1>:                    Directory.           (line  41)
 * sql:                                   Directory.           (line  44)
 * sql <1>:                               Directory.           (line  44)
-* with-postmodern-connection:            Directory.           (line 122)
-* with-postmodern-connection <1>:        Directory.           (line 122)
+* with-postmodern-connection:            Directory.           (line 125)
+* with-postmodern-connection <1>:        Directory.           (line 125)
 
 
 File: jasql.info,  Node: Type Index,  Prev: Function and Macro Index,  Up: Top
@@ -857,8 +868,8 @@ E Type Index
  [index ]
 * Menu:
 
-* postgres-handle:                       Directory.            (line 63)
-* postgres-handle <1>:                   Directory.            (line 63)
+* postgres-handle:                       Directory.            (line 66)
+* postgres-handle <1>:                   Directory.            (line 66)
 * sqlite-handle:                         Directory.            (line 47)
 * sqlite-handle <1>:                     Directory.            (line 47)
 
@@ -886,13 +897,15 @@ Ref: Generic-Function select7553
 Ref: Generic-Function select-one-row7644
 Ref: Function sql7757
 Ref: Class jasql.sqlite:sqlite-handle7827
-Ref: Class jasql.postgres:postgres-handle8377
-Ref: Macro jasql.postgres:with-postmodern-connection10813
-Node: GNU Free Documentation License10920
-Node: Concept Index34105
-Node: Variable Index36060
-Node: Function and Macro Index36203
-Node: Type Index37991
+Ref: Function jasql.sqlite:make-handle8377
+Ref: Class jasql.postgres:postgres-handle8463
+Ref: Macro jasql.postgres:with-postmodern-connection10899
+Ref: Function jasql.postgres:make-handle11006
+Node: GNU Free Documentation License11174
+Node: Concept Index34359
+Node: Variable Index36314
+Node: Function and Macro Index36457
+Node: Type Index38537
 
 End Tag Table
 
