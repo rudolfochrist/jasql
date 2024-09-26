@@ -8,11 +8,10 @@
 (in-suite* :jasql.postgres.test)
 
 (defvar *test-db*
-  (make-instance 'postgres-handle
-                 :database "jasqltest"
-                 :username "jasql"
-                 :password nil
-                 :host :unix))
+  (make-handle :database "jasqltest"
+               :username "jasql"
+               :password nil
+               :host :unix))
 
 
 (defun count-users (&optional db)

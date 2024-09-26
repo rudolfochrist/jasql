@@ -8,7 +8,8 @@
   (:export
    #:sqlite-handle
    #:path
-   #:busy-timeout))
+   #:busy-timeout
+   #:make-handle))
 
 (in-package #:jasql.sqlite)
 
@@ -22,6 +23,9 @@
                  :documentation "Busy timeout for this connection."))
   (:documentation "Wraps a database connection to a SQLite database."))
 
+(defun make-handle (&key path busy-timeout)
+  "Create a fresh database handle"
+  (make-instance 'sqlite-handle :path path :busy-timeout busy-timeout))
 
 (defun escape-parameters (params)
   (labels ((recu (params result)

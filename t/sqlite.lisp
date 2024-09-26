@@ -1,3 +1,4 @@
+
 ;;;; sqlite.lisp
 
 (defpackage #:jasql.sqlite.test
@@ -10,7 +11,7 @@
 (defparameter *test-db-path* (asdf:system-relative-pathname "jasql" "t/test.sqlite3"))
 
 (defparameter *test-db*
-  (make-instance 'jasql.sqlite:sqlite-handle :path *test-db-path*))
+  (make-handle :path *test-db-path*))
 
 
 (defun count-users ()

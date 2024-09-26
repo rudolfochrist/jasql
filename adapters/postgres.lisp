@@ -8,7 +8,8 @@
   (:export
    #:postgres-handle
    #:with-postmodern-connection
-   #:spec))
+   #:spec
+   #:make-handle))
 
 (in-package #:jasql.postgres)
 
@@ -62,6 +63,21 @@
   (with-accessors ((db psql-database) (role psql-username)) handle
     (print-unreadable-object (handle stream :type t)
       (format stream "~A>~A" db role))))
+
+(defun make-handle (&key database username password host port
+                      pooled-p use-ssl service application-name use-binary)
+  "Create a fresh database handle"
+  (make-instance 'postgres-handle
+                 :database database
+                 :username username
+                 :password password
+                 :host host
+                 :port port
+                 :pooled-p pooled-p
+                 :use-ssl use-ssl
+                 :service service
+                 :application-name application-name
+                 :use-binary use-binary))
 
 
 (defmethod spec ((db postgres-handle))
