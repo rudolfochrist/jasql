@@ -19,7 +19,7 @@
              :accessor psql-database
              :documentation "The database name.")
    (username :initarg :username
-             :initform ""
+             :initform "postgres"
              :accessor psql-username
              :documentation "Username to use for this database connection.")
    (password :initarg :password
@@ -64,8 +64,17 @@
     (print-unreadable-object (handle stream :type t)
       (format stream "~A>~A" db role))))
 
-(defun make-handle (&key database username password host port
-                      pooled-p use-ssl service application-name use-binary)
+(defun make-handle (&key
+                      database
+                      (username "postgres")
+                      (password "")
+                      (host "localhost")
+                      (port 5432)
+                      pooled-p
+                      (use-ssl :try)
+                      (service "")
+                      (application-name "")
+                      use-binary)
   "Create a fresh database handle"
   (make-instance 'postgres-handle
                  :database database

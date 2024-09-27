@@ -10,7 +10,6 @@
 (defvar *test-db*
   (make-handle :database "jasqltest"
                :username "jasql"
-               :password nil
                :host :unix))
 
 
