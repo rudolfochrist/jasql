@@ -7,8 +7,8 @@ JASQL=jasql
 PACKAGE=$(JASQL)-$(VERSION)
 
 # variables
-ASDSRCS=$(wildcard *.asd)
-LISPSRCS=$(wildcard *.lisp)
+ASDSRCS=$(wildcard **/*.asd)
+LISPSRCS=$(wildcard **/*.lisp)
 SRCS=$(ASDSRCS) $(LISPSRCS)
 
 # sbcl
