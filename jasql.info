@@ -223,8 +223,17 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 4 Directory
 ***********
 
+ -- Function: docstring symbol
+     Return docstring of ‘symbol’.
+
  -- Generic Function: execute-script db sql
      Run ‘sql’ without any variable substitution.
+
+ -- Generic Function: insert-returning db sql &optional parameters
+     Run ‘insert’ statement and return auto-generated value.
+
+     An auto-generated value can be the (e.g.)  ‘id’ of the last
+     inserted value.
 
  -- Generic Function: insert-update-delete db sql &optional parameters
      Run an ‘insert/update/delete’ statement.
@@ -242,15 +251,6 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
      ‘path’ is either a ‘sql’ file or a directory that contains ‘sql’
      files.  If ‘path’ is relative, it is assumed to be relative to
      ‘system’.
-
- -- Function: docstring symbol
-     Return docstring of ‘symbol’.
-
- -- Generic Function: insert-returning db sql &optional parameters
-     Run ‘insert’ statement and return auto-generated value.
-
-     An auto-generated value can be the (e.g.)  ‘id’ of the last
-     inserted value.
 
  -- Function: paramaters symbol
      Parameters used in ‘sql’ for ‘symbol’.
@@ -339,6 +339,11 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
           ‘(setf jasql.postgres::psql-use-binary)’
 
           User binary protocol for communication.
+        • ‘search-path’ -- initarg: ‘:search-path’; reader:
+          ‘jasql.postgres::search-path’; writer:
+          ‘(setf jasql.postgres::search-path)’
+
+          'search-path' that should be used for each query.
 
      Wraps a connection to a PostgreSQL database.
 
@@ -347,6 +352,7 @@ File: jasql.info,  Node: Directory,  Next: GNU Free Documentation License,  Prev
 
  -- Function: make-handle &key database username password host port
           pooled-p use-ssl service application-name use-binary
+          search-path
      Create a fresh database handle
 
 
@@ -832,22 +838,22 @@ D Function and Macro Index
  [index ]
 * Menu:
 
-* docstring:                             Directory.           (line  26)
-* docstring <1>:                         Directory.           (line  26)
-* execute-script:                        Directory.           (line   6)
-* execute-script <1>:                    Directory.           (line   6)
-* insert-returning:                      Directory.           (line  29)
-* insert-returning <1>:                  Directory.           (line  29)
-* insert-update-delete:                  Directory.           (line   9)
-* insert-update-delete <1>:              Directory.           (line   9)
-* insert-update-delete-many:             Directory.           (line  12)
-* insert-update-delete-many <1>:         Directory.           (line  12)
-* load-sql:                              Directory.           (line  19)
-* load-sql <1>:                          Directory.           (line  19)
+* docstring:                             Directory.           (line   6)
+* docstring <1>:                         Directory.           (line   6)
+* execute-script:                        Directory.           (line   9)
+* execute-script <1>:                    Directory.           (line   9)
+* insert-returning:                      Directory.           (line  12)
+* insert-returning <1>:                  Directory.           (line  12)
+* insert-update-delete:                  Directory.           (line  18)
+* insert-update-delete <1>:              Directory.           (line  18)
+* insert-update-delete-many:             Directory.           (line  21)
+* insert-update-delete-many <1>:         Directory.           (line  21)
+* load-sql:                              Directory.           (line  28)
+* load-sql <1>:                          Directory.           (line  28)
 * make-handle:                           Directory.           (line  63)
 * make-handle <1>:                       Directory.           (line  63)
-* make-handle <2>:                       Directory.           (line 128)
-* make-handle <3>:                       Directory.           (line 128)
+* make-handle <2>:                       Directory.           (line 133)
+* make-handle <3>:                       Directory.           (line 133)
 * paramaters:                            Directory.           (line  35)
 * paramaters <1>:                        Directory.           (line  35)
 * select:                                Directory.           (line  38)
@@ -856,8 +862,8 @@ D Function and Macro Index
 * select-one-row <1>:                    Directory.           (line  41)
 * sql:                                   Directory.           (line  44)
 * sql <1>:                               Directory.           (line  44)
-* with-postmodern-connection:            Directory.           (line 125)
-* with-postmodern-connection <1>:        Directory.           (line 125)
+* with-postmodern-connection:            Directory.           (line 130)
+* with-postmodern-connection <1>:        Directory.           (line 130)
 
 
 File: jasql.info,  Node: Type Index,  Prev: Function and Macro Index,  Up: Top
@@ -886,12 +892,12 @@ Node: Bulk operations with *!4780
 Node: Execute script with #5455
 Node: Select one with ?6019
 Node: Directory6277
-Ref: Generic-Function execute-script6418
-Ref: Generic-Function insert-update-delete6517
-Ref: Generic-Function insert-update-delete-many6639
-Ref: Macro load-sql6901
-Ref: Function docstring7173
-Ref: Generic-Function insert-returning7244
+Ref: Function docstring6418
+Ref: Generic-Function execute-script6489
+Ref: Generic-Function insert-returning6588
+Ref: Generic-Function insert-update-delete6812
+Ref: Generic-Function insert-update-delete-many6934
+Ref: Macro load-sql7196
 Ref: Function paramaters7468
 Ref: Generic-Function select7553
 Ref: Generic-Function select-one-row7644
@@ -899,13 +905,13 @@ Ref: Function sql7757
 Ref: Class jasql.sqlite:sqlite-handle7827
 Ref: Function jasql.sqlite:make-handle8377
 Ref: Class jasql.postgres:postgres-handle8463
-Ref: Macro jasql.postgres:with-postmodern-connection10899
-Ref: Function jasql.postgres:make-handle11006
-Node: GNU Free Documentation License11174
-Node: Concept Index34359
-Node: Variable Index36314
-Node: Function and Macro Index36457
-Node: Type Index38537
+Ref: Macro jasql.postgres:with-postmodern-connection11134
+Ref: Function jasql.postgres:make-handle11241
+Node: GNU Free Documentation License11431
+Node: Concept Index34616
+Node: Variable Index36571
+Node: Function and Macro Index36714
+Node: Type Index38794
 
 End Tag Table
 
