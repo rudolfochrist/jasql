@@ -56,7 +56,11 @@
    (use-binary :initarg :use-binary
                :initform nil
                :accessor psql-use-binary
-               :documentation "User binary protocol for communication."))
+               :documentation "User binary protocol for communication.")
+   (search-path :initarg :search-path
+                :initform nil
+                :accessor search-path
+                :documentation "`search-path' that should be used for each query."))
   (:documentation "Wraps a connection to a PostgreSQL database."))
 
 (defmethod print-object ((handle postgres-handle) stream)
@@ -74,7 +78,8 @@
                       (use-ssl :try)
                       (service "")
                       (application-name "")
-                      use-binary)
+                      use-binary
+                      search-path)
   "Create a fresh database handle"
   (make-instance 'postgres-handle
                  :database database
@@ -86,7 +91,8 @@
                  :use-ssl use-ssl
                  :service service
                  :application-name application-name
-                 :use-binary use-binary))
+                 :use-binary use-binary
+                 :search-path search-path))
 
 
 (defmethod spec ((db postgres-handle))
@@ -115,7 +121,11 @@
   "Establish a connection to the database DB."
   `(unless (and pomo:*database*
                 (pomo:connected-p pomo:*database*))
-     (postmodern:call-with-connection (spec ,db) (lambda () ,@body))))
+     (if (search-path ,db)
+         (pomo:call-with-connection (spec ,db) (lambda ()
+                                                 (pomo:with-schema ((search-path ,db) :if-not-exist nil)
+                                                   ,@body)))
+         (pomo:call-with-connection (spec ,db) (lambda () ,@body)))))
 
 
 (defvar *terminals* (list #\Space #\Tab #\Newline #\, #\; #\( #\)))

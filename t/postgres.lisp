@@ -98,3 +98,11 @@
         (insert-user *test-db* :username "foo")
         (insert-user *test-db* :username "foo")))
     (assert-that (count-users) (equal-to 0))))
+
+(test test-search-path
+  (let ((db (make-handle :database "jasqltest"
+                         :username "jasql"
+                         :host :unix
+                         :search-path "search_path_test")))
+    (with-postmodern-connection db
+      (pomo:query (:select 1)))))
